@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福井県のどんなところで税金が使われているか考えてみよう！</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1, p {
+            padding: 0 10px;
+        }
+        #content {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #map-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+        #map {
+            width: 100%;
+            height: auto;
+        }
+        .marker {
+            position: absolute;
+            cursor: pointer;
+            width: auto;
+            min-width: 40px;
+            height: auto;
+            background-color: white;
+            border: 2px solid black;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: black;
+            white-space: nowrap;
+            padding: 5px;
+            z-index: 10;
+        }
+        #info-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto 0;
+            text-align: left;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        #info-container img {
+            width: 100%;
+            height: auto;
+        }
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 28px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #cc0000;
+        }
+        @media (max-width: 600px) {
+            .marker {
+                font-size: 9px;
+                padding: 4px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.history.back()">BACK</button>
+    <h1>福井県のどんなところで税金が使われているか考えてみよう！</h1>
+    <p>市町村名の上をクリックして、有名な施設を見てみよう！</p>
+    <div id="content">
+        <div id="map-container">
+            <img id="map" src="fukui_map.jpg" alt="福井県の地図">
+            <div class="marker" style="top: 6%; left: 53%;" onclick="showInfo('awara')">あわら市</div>
+            <div class="marker" style="top: 43%; left: 59%;" onclick="showInfo('ikeda')">池田町</div>
+            <div class="marker" style="top: 21%; left: 59%;" onclick="showInfo('eiheiji')">永平寺町</div>
+            <div class="marker" style="top: 40%; left: 48%;" onclick="showInfo('echizen')">越前市</div>
+            <div class="marker" style="top: 33%; left: 38%;" onclick="showInfo('echizentown')">越前町</div>
+            <div class="marker" style="top: 88%; left: 7%;" onclick="showInfo('ooi')">おおい町</div>
+            <div class="marker" style="top: 37%; left: 78%;" onclick="showInfo('ono')">大野市</div>
+            <div class="marker" style="top: 82%; left: 16%;" onclick="showInfo('obama')">小浜市</div>
+            <div class="marker" style="top: 21%; left: 72%;" onclick="showInfo('katsuyama')">勝山市</div>
+            <div class="marker" style="top: 13%; left: 53%;" onclick="showInfo('sakai')">坂井市</div>
+            <div class="marker" style="top: 33%; left: 52%;" onclick="showInfo('sabae')">鯖江市</div>
+            <div class="marker" style="top: 77%; left: 3%;" onclick="showInfo('takahama')">高浜町</div>
+            <div class="marker" style="top: 65%; left: 43%;" onclick="showInfo('tsuruga')">敦賀市</div>
+            <div class="marker" style="top: 21%; left: 45%;" onclick="showInfo('fukui')">福井市</div>
+            <div class="marker" style="top: 51%; left: 50%;" onclick="showInfo('minamiechizen')">南越前町</div>
+            <div class="marker" style="top: 69%; left: 32%;" onclick="showInfo('mihama')">美浜町</div>
+            <div class="marker" style="top: 76%; left: 27%;" onclick="showInfo('wakasa')">若狭町</div>
+        </div>
+        <div id="info-container">
+            <h2 id="place-name"></h2>
+            <img id="place-img" src="" alt="">
+            <p id="place-desc"></p>
+        </div>
+    </div>
+    <script>
+        const places = {
+            awara: { name: "あわら市（あわら温泉）", img: "images/awara.jpg", desc: "あわら温泉は、福井県を代表する温泉地の一つです。" },
+            ikeda: { name: "池田町（龍双ヶ滝）", img: "images/ikeda.jpg", desc: "龍双ヶ滝は、日本の滝百選に選ばれる美しい滝です。" },
+            eiheiji: { name: "永平寺町（永平寺）", img: "images/eiheiji.jpg", desc: "永平寺は、曹洞宗の大本山として知られています。" },
+            echizen: { name: "越前市（越前和紙の里）", img: "images/echizen.jpg", desc: "越前和紙の里では、伝統的な和紙作りを体験できます。" },
+            echizentown: { name: "越前町（越前岬）", img: "images/echizentown.jpg", desc: "越前岬は、壮大な日本海の景観を楽しめるスポットです。" },
+            ooi: { name: "おおい町（エルガイアおおい）", img: "images/ooi.jpg", desc: "エルガイアおおいは、環境学習施設として活用されています。" },
+            ono: { name: "大野市（越前大野城）", img: "images/ono.jpg", desc: "天空の城越前大野城は、幻想的なスポットとして知られています。" },
+            obama: { name: "小浜市（若狭フィッシャーマンズワーフ）", img: "images/obama.jpg", desc: "若狭フィッシャーマンズワーフは、新鮮な海の幸が楽しめます。" },
+            katsuyama: { name: "勝山市（恐竜博物館）", img: "images/katsuyama.jpg", desc: "恐竜博物館は、子供から大人まで人気の全国的に有名な博物館です。" },
+            sakai: { name: "坂井市（東尋坊）", img: "images/sakai.jpg", desc: "東尋坊は、日本有数の断崖絶壁の名勝です。" },
+            sabae: { name: "鯖江市（めがねミュージアム）", img: "images/sabae.jpg", desc: "めがねミュージアムでは、鯖江のメガネ産業を学べます。" },
+            takahama: { name: "高浜町（城山公園）", img: "images/takahama.jpg", desc: "城山公園は、桜の名所としても知られています。" },
+            tsuruga: { name: "敦賀市（敦賀赤レンガ倉庫）", img: "images/tsuruga.jpg", desc: "敦賀赤レンガ倉庫は、歴史を感じる観光スポットです。" },
+            fukui: { name: "福井市（福井城址）", img: "images/fukui.jpg", desc: "福井城址は、福井市の歴史を感じることができる場所です。" },
+            minamiechizen: { name: "南越前町（今庄宿）", img: "images/minamiechizen.jpg", desc: "今庄宿は、旧北陸道の宿場町として栄えました。" },
+            mihama: { name: "美浜町（美浜原子力PRセンター）", img: "images/mihama.jpg", desc: "美浜原子力PRセンターでは、エネルギーについて学べます。" },
+            wakasa: { name: "若狭町（三方五湖）", img: "images/wakasa.jpg", desc: "三方五湖は、美しい湖群として知られています。" }
+        };
+        function showInfo(city) {
+            const place = places[city];
+            document.getElementById("place-name").textContent = place.name;
+            document.getElementById("place-img").src = place.img;
+            document.getElementById("place-img").alt = place.name;
+            document.getElementById("place-desc").textContent = place.desc;
+        }
+    </script>
+</body>
+</html>

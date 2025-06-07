@@ -112,44 +112,61 @@
     .home-button:hover {
       background-color: #cc0000;
     }
+    .link-buttons {
+  display: flex;
+  gap: 20px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.link-button {
+  padding: 14px 28px;
+  background-color: #1E90FF;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+.link-button:hover {
+  background-color: #004090;
+}
+
   </style>
 </head>
 <body>
 
-  <h1>国の財政を見てみよう</h1>
+  <h1>日本の借金の状況</h1>
 
   <div class="lead-section">
     <div class="lead">
-      1年間に得た国の収入を「歳入」、支出を「歳出」といい、この歳入と歳出の計画を予算といいます。<br>
-      国や地方公共団体が行う経済活動を「財政」といいます。
+      歳出＞歳入だと借金が増えていくことになります。<br>日本の借金の現状は、世界で見たときに<br>どのくらいの水準なのか見てみましょう。
     </div>
     <img src="image53.png" alt="先生犬のキャラクター" class="lead-image">
   </div>
 
   <div class="card">
-    <div class="card-title">2025年度（令和7年度）予算の国の一般会計歳出</div>
+    <div class="card-title">いわゆる「赤字国債」の増加</div>
     <div class="card-text">
-      115.2兆円は、主に<br>
-      ①社会保障、②国債費、③地方交付税交付金等に使われており、<br>
-      これらで約3/4を占めています。
+      普通国債残高は、累増の一途をたどり、2025年度末には1,129兆円に上ると見込まれています。
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">2025年度（令和7年度）予算の国の一般会計歳入</div>
+    <div class="card-title">財政の持続可能性</div>
     <div class="card-text">
-      115.2兆円は、<span style="color:#005bac; font-weight:bold;">税収等と公債金（借金）</span>で構成されています。
+      財政の持続可能性を見る上では、税収を生み出す元となる<br>
+国の経済規模（GDP）に対して、総額でどのぐらいの借金をしているかが重要です。<br>日本の債務残高はGDPの2倍を超えており、<br>主要先進国の中で最も高い水準にあります。
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">現在の財政状況</div>
-    <div class="card-text">
-      税収等では歳出全体の約2/3しか賄えておらず、<br>
-      残りの約1/3は<span style="color:#005bac; font-weight:bold;">公債金（借金）</span>に依存しています。<br><br>
-      この借金の返済には将来世代の税収等が充てられることになるため、<br>
-      将来世代へ負担を先送りしていることになります。
-    </div>
+  <div class="link-buttons">
+    <a class="link-button" href="sekaisaimu/index.html">各国の債務残高の推移を見てみよう</a>
+    <a class="link-button" href="japankokusai/index.html">日本の国債残高の推移を見てみよう</a>
   </div>
 
   <button class="home-button" onclick="location.href='../main.html'">HOME</button>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>石川県の色々なところで税金が使われているよ！</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    #content {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #map-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    #map {
+      width: 100%;
+      height: auto;
+    }
+
+    .marker {
+      position: absolute;
+      cursor: pointer;
+      width: 50px;
+      height: 10px;
+      background-color: white;
+      border: 2px solid black;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      font-weight: bold;
+      color: black;
+      white-space: nowrap;
+      padding: 5px;
+    }
+
+    #info-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto 0;
+      text-align: left;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    #info-container img {
+      width: 100%;
+      height: auto;
+    }
+
+    h1, p {
+      font-family: 'Arial', sans-serif;
+      margin: 10px;
+    }
+
+    h1 {
+      color: #000000;
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 14px 28px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #cc0000;
+    }
+
+    @media (max-width: 768px) {
+      #content {
+        flex-direction: column;
+        padding: 10px;
+      }
+
+      #map-container {
+        width: 100%;
+      }
+
+      #info-container {
+        padding: 10px;
+      }
+
+      .marker {
+        font-size: 9px;
+        padding: 4px;
+        width: auto;
+        min-width: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="window.history.back()">BACK</button>
+  <h1>石川県の色々なところで税金が使われているよ！</h1>
+  <p>市町村名の上をクリックして、有名な施設を見てみよう！</p>
+  <div id="content">
+    <div id="map-container">
+      <img id="map" src="ishikawa_map.jpg" alt="石川県の地図">
+      <div class="marker" style="top: 63%; left: 43%;" onclick="showInfo('kanazawa')">金沢市</div>
+      <div class="marker" style="top: 27%; left: 53%;" onclick="showInfo('nanao')">七尾市</div>
+      <div class="marker" style="top: 79%; left: 29%;" onclick="showInfo('komatsu')">小松市</div>
+      <div class="marker" style="top: 11%; left: 48%;" onclick="showInfo('wajima')">輪島市</div>
+      <div class="marker" style="top: 3%; left: 69%;" onclick="showInfo('suzu')">珠洲市</div>
+      <div class="marker" style="top: 78%; left: 18%;" onclick="showInfo('kaga')">加賀市</div>
+      <div class="marker" style="top: 39%; left: 43%;" onclick="showInfo('hakui')">羽咋市</div>
+      <div class="marker" style="top: 50%; left: 37%;" onclick="showInfo('kahoku')">かほく市</div>
+      <div class="marker" style="top: 82%; left: 41%;" onclick="showInfo('hakusan')">白山市</div>
+      <div class="marker" style="top: 71%; left: 28%;" onclick="showInfo('nomi')">能美市</div>
+      <div class="marker" style="top: 63%; left: 32%;" onclick="showInfo('nonoichi')">野々市市</div>
+      <div class="marker" style="top: 67%; left: 28%;" onclick="showInfo('kawakita')">川北町</div>
+      <div class="marker" style="top: 54%; left: 45%;" onclick="showInfo('tsubata')">津幡町</div>
+      <div class="marker" style="top: 55%; left: 33%;" onclick="showInfo('uchinada')">内灘町</div>
+      <div class="marker" style="top: 29%; left: 41%;" onclick="showInfo('shika')">志賀町</div>
+      <div class="marker" style="top: 45%; left: 45%;" onclick="showInfo('hodatsushimizu')">宝達志水町</div>
+      <div class="marker" style="top: 34%; left: 51%;" onclick="showInfo('nakanoto')">中能登町</div>
+      <div class="marker" style="top: 18%; left: 53%;" onclick="showInfo('anamizu')">穴水町</div>
+      <div class="marker" style="top: 12%; left: 61%;" onclick="showInfo('noto')">能登町</div>
+    </div>
+    <div id="info-container">
+      <h2 id="place-name"></h2>
+      <img id="place-img" src="" alt="">
+      <p id="place-desc"></p>
+    </div>
+  </div>
+
+  <script>
+    const places = {
+      kanazawa: {
+        name: "金沢市",
+        images: [
+          { img: "images/kanazawa.jpg", desc: "金沢２１世紀美術館<br>体験型の現代アートが楽しめる美術館です。有名な作品「スイミング・プール」では、水の中にいるような不思議な感覚を味わえます。建物はガラス張りの円形で、明るく開放的な雰囲気です。アートを身近に感じられる、楽しいスポットです。" },
+          { img: "images/kanazawa_stadium.jpg", desc: "金沢スタジアム<br>2024年にできたサッカー専用のスタジアムです。ピッチとの距離が近く、選手の動きや迫力を間近で感じられます。観客席には屋根もあり、雨の日でも安心して観戦できます。" },
+          { img: "images/kanazawa_cruise.jpg", desc: "金沢港クルーズターミナル<br>2020年にオープンした海の玄関口です。日本海の白波をイメージした屋根と全面ガラス張りの建物からは、美しい海の景色が楽しめます。館内には、クルーズ船の操船を体験できる「まなび体験ルーム」や、海を一望できるレストラン、展望デッキなどがあり、学びと楽しさがいっぱいのスポットです。" },
+          { img: "images/kanazawa_library.jpg", desc: "石川県立図書館<br>2022年に開館した、まるで未来の図書館のような施設です。本を借りるだけでなく、デジタルアートやモノづくり体験も楽しめます。円形の大空間「グレートホール」や、宇宙をイメージした「ブックリウム」など、ワクワクする仕掛けがいっぱい。約100種類の椅子があり、自分だけの読書スポットを見つけられます。勉強も遊びもできる、みんなに開かれた図書館です。" }
+        ]
+      },
+      nanao: { name: "七尾市", images: [ { img: "images/nanao.jpg", desc: "和倉温泉お祭り会館<br>七尾市の4大祭りを実物大で展示し、迫力満点の体験ができる施設です。祭りの熱気を感じながら、楽しく学べます。" } ] },
+      komatsu: {
+        name: "小松市",
+        images: [
+          { img: "images/komatsu.jpg", desc: "サイエンスヒルズこまつ<br>体験型の科学館です。「ワンダーランド」では、エネルギーや通信などの科学の原理を楽しく学べる展示があり、「ミラクルラボ」や「フューチャーラボ」では、実験やものづくり体験ができます。また、ドーム型の「3Dスタジオ」では、迫力ある映像で宇宙や科学の世界を楽しめます。" },
+          { img: "images/komatsu_nine.jpg", desc: "Komatsu九（ナイン）<br>小松駅直結の観光交流センターです。地元のグルメやお土産、歴史展示、コワーキングスペースなどが揃い、学びと楽しさが詰まったスポットです。友達や家族と一緒に、小松の魅力を発見しに行こう！" },
+          { img: "images/kibagata.jpg", desc: "木場潟公園東園地「里山交流ハウス」<br>自然とふれあいながら学べる体験型施設です。トマトの収穫体験や再生可能エネルギーの学習ができ、カフェや足湯も楽しめます。里山の魅力を感じながら、楽しく学べるスポットです。" }
+        ]
+      },
+      wajima: { name: "輪島市", images: [ { img: "images/wajima.jpg", desc: "輪島キリコ会館<br>能登の伝統的なお祭り「キリコ祭り」を体感できる施設です。館内には高さ約10メートルの巨大なキリコ（奉燈）が30基以上展示され、祭り囃子や光の演出で、まるで本物の祭りに参加しているような気分を味わえます。3階の展望ロビーからは日本海の景色も楽しめます。現在、令和6年の能登半島地震の影響で休館中ですが、再開を楽しみに待ちましょう。" } ] },
+      suzu: { name: "珠洲市", images: [ { img: "images/suzu.jpg", desc: "珠洲市民図書館<br>地域密着型の図書館です。一般書から児童書、視聴覚資料まで幅広く取り揃え、タッチパネル式の蔵書検索システムも完備しています。グループ閲覧室や視聴覚ブース、ノートパソコンの貸出もあり、学習や調べものに最適です。" } ] },
+      kaga: {
+        name: "加賀市",
+        images: [
+          { img: "images/kaga.jpg", desc: "山代スマートパーク<br>テクノロジーを体験できる公園です。園内の「かがやきITルーム」では、ドローンプログラミングやVR、3Dプリンターなど最新のIT技術を学べます。また、フラワーショップ＆カフェも併設されており、自然豊かな環境でリラックスしながら学びと遊びを楽しめるスポットです。" },
+          { img: "images/kaga_nikoniko.jpg", desc: "屋内児童遊戯施設「かがにこにこパーク」<br>日本海側最大級の大型ネット遊具やボルダリング、すべり台など、多彩な遊具が揃い、乳幼児から小学生までの子どもたちが安心して遊べます。授乳室やキッズトイレ、親子のふれあいスペースも完備され、雨の日でも快適に過ごせるスポットです。" }
+        ]
+      },
+      hakui: { name: "羽咋市", images: [ { img: "images/hakui.jpg", desc: "ＬＡＫＵＮＡはくい<br>4階建ての交流施設です。1階には図書カフェがあり、学習や読書に最適な空間が広がっています。2階の「LAKUNAこうえん」では、ネット遊具やバンク遊具など、子どもたちが無料で遊べる屋内公園が人気です。3階にはキッチンスタジオやアートスタジオ、eスポーツスタジオがあり、さまざまな体験が可能。4階の「LAKUNAホール」や「みはらしテラス」からは、羽咋市の景色を一望できます。多世代が集い、学び、楽しめるスポットです。" } ] },
+      kahoku: {
+        name: "かほく市",
+        images: [
+          { img: "images/kahoku.jpg", desc: "あそびの森かほっくる<br>全天候型の屋内遊び場です。高さ10mの巨大ツリー遊具「ワールドツリー」や、屋外の「ツリーハウスアドベンチャー」など、子どもたちが思いっきり体を動かせる遊具が充実しています。また、保護者向けのカフェやコワーキングスペースも併設されており、親子で快適に過ごせる施設です。雨の日でも安心して遊べる、家族みんなで楽しめるスポットです。" },
+          { img: "images/kahoku_library.jpg", desc: "かほく市立中央図書館<br>「滞在型の図書館」をテーマにした施設で、ゆったりとした読書空間や親子で過ごせるスペースが特徴です。また、館内にはWi-Fiや学習室も完備されており、勉強や調べものにも最適です。地域の歴史や文化に触れられる展示もあり、家族みんなで楽しめる図書館です。" }
+        ]
+      },
+      hakusan: {
+        name: "白山市",
+        images: [
+          { img: "images/hakusan.jpg", desc: "トレインパーク白山<br>北陸新幹線の仕組みや運転を体験できる施設です。遊具や展示も充実し、子どもから大人まで楽しめます。" },
+          { img: "images/hakusan_geopark.jpg", desc: "祝！白山手取川ユネスコ世界ジオパーク<br>白山手取川ジオパークは、2023年5月24日にユネスコ世界ジオパークに認定されました。「山－川－海そして雪 いのちを育む水の旅」をテーマに、地球の営みと人々の暮らしのつながりを学べる場所です。自然と歴史を体感しに、ぜひ訪れてみてください。" },
+          { img: "images/hakusan_fire.jpg", desc: "白山消防署<br>石川県白山市・野々市市・川北町を管轄する白山野々市広域消防本部の一部で、火災・救急・救助活動のほか、防火指導や119番通報の対応など、地域の安全を守る重要な役割を担っています。" }
+        ]
+      },
+      nomi: {
+        name: "能美市",
+        images: [
+          { img: "images/nomi.jpg", desc: "能美ふるさとミュージアム<br>体験型の総合博物館です。国指定史跡の能美古墳群の出土品や、石川県指定文化財「絹本著色白山曼荼羅図」など、貴重な資料を展示しています。また、能美の自然や歴史をイメージした遊具で遊びながら学べる「こどもミュージアム のみっけ」もあり、子どもから大人まで楽しめます。" },
+          { img: "images/ishikawa_zoo.jpg", desc: "いしかわ動物園<br>特別天然記念物のトキやユキヒョウ、世界三大珍獣のコビトカバなど、珍しい動物たちを間近で観察できます。夏から秋にかけて開催される夜の動物園「ナイトZOO」では、ライトアップされた雰囲気の中で、普段とは違った動物たちの姿を楽しめます。家族みんなで楽しめるスポットです。" }
+        ]
+      },
+      nonoichi: { name: "野々市市", images: [ { img: "images/nonoichi.jpg", desc: "にぎわいの里ののいちカミーノ<br>市民交流の拠点です。公民館や市民活動センター、観光物産施設「1の1 NONOICHI」が併設され、学びや地域活動、食や買い物が楽しめます。イベントやワークショップも開催され、地域のにぎわいを創出しています。" } ] },
+      kawakita: { name: "川北町", images: [ { img: "images/kawakita.jpg", desc: "川北町東部地区児童館<br>0歳から18歳までの子どもたちが自由に利用できる遊び場です。遊具やおもちゃが充実しており、子どもたちが安心して遊べる環境が整っています。" } ] },
+      tsubata: {
+        name: "津幡町",
+        images: [
+          { img: "images/tsubata.jpg", desc: "津幡町住吉公園屋内温水プール「アザレア」<br>2023年4月にオープンした全天候型のスポーツ施設です。メインプール、多目的プール、幼児プール、スパプールを備え、誰もが快適に利用できます。サウナやフィットネススタジオも併設され、健康づくりやリフレッシュに最適な場所です。" },
+          { img: "images/kinscule.jpg", desc: "河合谷宿泊体験交流施設　河愛の里Kinscule（キンシューレ）<br>自然豊かな里山に位置する宿泊体験交流施設です。旧河合谷小学校を活用し、2021年7月にオープンしました。施設名には、地域への愛と歴史が込められています。また、施設内にはランチ営業を行うカフェもあり、地元の食材を使った料理を楽しむことができます。" }
+        ]
+      },
+      uchinada: { name: "内灘町", images: [ { img: "images/uchinada.jpg", desc: "サンセットブリッジ内灘<br>全長344メートルの斜張橋です。白鳥が羽ばたくような優美なデザインで、夕暮れ時には日本海に沈む美しい夕日が望めます。夜間は季節ごとに色が変わるライトアップが施され、ロマンチックな雰囲気を楽しめます。" } ] },
+      shika: { name: "志賀町", images: [ { img: "images/shika.jpg", desc: "ますほの丘住宅ファミリー棟<br>子育て世帯向けの町営住宅です。自然豊かな環境で、海水浴やマリンスポーツも楽しめる魅力的な住まいです。" } ] },
+      hodatsushimizu: { name: "宝達志水町", images: [ { img: "images/hodatsushimizu.jpg", desc: "ほっぴーパーク<br>屋外の遊び場で、リニューアルされ、ベンチも増設されました。スラックレールやクライミング、ふわふわドームなどがあり、地域の憩いの場として親しまれています。" } ] },
+      nakanoto: { name: "中能登町", images: [ { img: "images/nakanoto.jpg", desc: "バイオマスメタン発酵施設<br>下水汚泥やし尿、生ごみなどを混合処理し、発生するメタンガスをエネルギーとして活用。発酵後の汚泥は肥料化し、地域の農地に還元するなど、資源循環型の施設です。" } ] },
+      anamizu: {
+        name: "穴水町",
+        images: [
+          { img: "images/anamizu.jpg", desc: "のと里山空港<br>空港ターミナルは「道の駅」としても登録されており、観光案内所や売店、レストランなどが併設されています。また、無料の駐車場や展望デッキも完備され、旅行者にとって便利で快適な施設となっています。" },
+          { img: "images/anamizu_field.jpg", desc: "穴水陸上競技場<br>全天候型の400m×8レーンを備えた陸上競技場です。フィールドは天然芝で、跳躍場や投てき場も完備されています。しかし、令和6年能登半島地震の影響により、現在は応急仮設住宅が建設されており、一般の利用はできません。" }
+        ]
+      },
+      noto: { name: "能登町", images: [ { img: "images/noto.jpg", desc: "イカの駅つくモール<br>シンボルの巨大イカモニュメント「イカキング」や、地元特産の船凍イカを使った料理が楽しめるレストラン、能登の特産品を扱う直売所などがあり、家族連れにも人気です。" } ] }
+    };
+
+    function showInfo(city) {
+      const place = places[city];
+      const container = document.getElementById("info-container");
+
+      let html = `<h2>${place.name}</h2>`;
+      if (place.images && Array.isArray(place.images)) {
+        for (const item of place.images) {
+          html += `<img src="${item.img}" alt="${place.name}"><p>${item.desc}</p>`;
+        }
+      } else {
+        html += `<img src="${place.img}" alt="${place.name}"><p>${place.desc}</p>`;
+      }
+
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>

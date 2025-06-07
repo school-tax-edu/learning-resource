@@ -1,154 +1,420 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>納税の義務と公平な税金</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Arial", sans-serif;
-      background-color: #fffae6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 3em;
-      color: #0044cc;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .lead-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .lead {
-      font-size: 1.6em;
-      font-weight: bold;
-      text-align: center;
-      margin: 0;
-    }
-
-    .lead-image {
-      width: 100px;
-      height: auto;
-    }
-
-    .card {
-      width: 90%;
-      max-width: 800px;
-      background: white;
-      border-left: 10px solid #005bac;
-      border-radius: 12px;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card:nth-of-type(1) { animation-delay: 0.2s; }
-    .card:nth-of-type(2) { animation-delay: 0.4s; }
-    .card:nth-of-type(3) { animation-delay: 0.6s; }
-    .card:nth-of-type(4) { animation-delay: 0.8s; }
-    .card:nth-of-type(5) { animation-delay: 1s; }
-
-    .card-title {
-      font-size: 1.4em;
-      color: #005bac;
-      margin-bottom: 5px;
-    }
-
-    .card-text {
-      font-size: 1.2em;
-      line-height: 1.4;
-    }
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日本村の予算を作ろう！</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #FFF8E1;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .section {
+            margin: 3px; /* 余白をより狭くする */
+            padding: 10px;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .debt-info {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0; /* グラフとの余白を調整 */
+        }
+        .debt-amount {
+            color: red;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        th, td { background-color: #E3F2FD; }
+            border: 2px solid #26C6DA;
+            padding: 8px;
+            text-align: center;
+        }
+        input {
+            width: 100px;
+            text-align: right;
+            border: 2px solid #26C6DA;
+            padding: 5px;
+            background: #26C6DA; color: white;
+        }
+        .charts {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            flex-wrap: nowrap;
+        }
+        .charts .section {
+            width: 48%;
+        }
+        canvas {
+            width: 100% !important;
+            height: 500px !important;
+        }
+        th:first-child, td:first-child {
+            writing-mode: horizontal-tb !important; /* 横書きにする */
+            text-orientation: mixed; /* 文字の向きを通常通りにする */
+            white-space: nowrap; /* 改行しない */
+        }
+　      .wheel-container {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #26C6DA; color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+        .wheel {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            transition: transform 0.3s ease-out;
+        }
+        .wheel li {
+            height: 40px;
+            line-height: 40px;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+        .selected {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF7043;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+        input[type="number"] {
+            width: 60px;
+            text-align: center;
+            font-size: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        input:disabled {
+            background-color: #e0e0e0; /* 薄いグレー */
+            color: #888; /* 文字色もグレー */
+            border: 1px solid #aaa; /* 枠線を薄く */
+            cursor: not-allowed; /* マウスカーソルを禁止マークに */
+        }
+        th:first-child, td:first-child {
+            min-width: 80px; /* 年度の幅を広げる */
+        }
+        th:last-child, td:last-child {
+            min-width: 100px; /* 合計の幅を広げる */
+        }
+        /* 右上HOMEボタン */
     .home-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      z-index: 999;
-      transition: background-color 0.3s;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 24px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transition: background-color 0.3s;
     }
-
     .home-button:hover {
-      background-color: #cc0000;
+        background-color: #cc0000;
     }
-
-    @media (max-width: 600px) {
-      .lead-image {
-        width: 70px;
-      }
-      .card-title {
-        font-size: 1.2em;
-      }
-      .card-text {
-        font-size: 1em;
-      }
-    }
-  </style>
+　　</style>
 </head>
 <body>
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+    <h1>日本村の予算を作ろう！（予算は君の手に！）</h1>
+    <div class="container">
+        <div class="section">
+            <h3>歳出の入力</h3>
+            <table>
+                <tr>
+                    <th>年度</th>
+                    <th>年金</th><th>医療</th><th>子ども<br>子育て</th><th>介護</th><th>地方<br>交付金</th>
+                    <th>防衛</th><th>公共事業</th><th>教育</th><th>その他</th><th>借金返済</th><th>合計</th>
 
-  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+                </tr>
+                <tr>
+                    <td>今年</td>
+                    <td><input type="number" value="12" id="spendingThisYear0" value="12" disabled></td><td><input type="number" value="11" id="spendingThisYear1" value="11" disabled></td><td><input type="number" value="3" id="spendingThisYear2" value="3" disabled></td><td><input type="number" value="8" id="spendingThisYear3" value="8" disabled></td><td><input type="number" value="16" id="spendingThisYear4" value="16" disabled></td><td><input type="number" value="7" id="spendingThisYear5" value="7" disabled></td><td><input type="number" value="5" id="spendingThisYear6" value="5" disabled></td><td><input type="number" value="4" id="spendingThisYear7" value="4" disabled></td><td><input type="number" value="10" id="spendingThisYear8" value="10" disabled></td><td><input type="number" value="24" id="spendingThisYear9" value="24" disabled></td><td class="total-cell" id="spendingTotalThisYear">0</td>
 
-  <h1>税の公平性</h1>
+                </tr>
+                <tr>
+                    <td>来年</td>
+                    <td><input type="number" value="12" id="spendingNextYear0"></td><td><input type="number" value="11" id="spendingNextYear1"></td><td><input type="number" value="3" id="spendingNextYear2"></td><td><input type="number" value="8" id="spendingNextYear3"></td><td><input type="number" value="16" id="spendingNextYear4"></td><td><input type="number" value="7" id="spendingNextYear5"></td><td><input type="number" value="5" id="spendingNextYear6"></td><td><input type="number" value="4" id="spendingNextYear7"></td><td><input type="number" value="10" id="spendingNextYear8" value="10" disabled></td><td><input type="number" value="24" id="spendingNextYear9" value="24" disabled></td><td class="total-cell" id="spendingTotalNextYear">0</td>
 
-  <div class="lead-container">
-    <p class="lead">税金には、みんながより公平だと思える仕組みが必要！</p>
-    <img src="image53.png" alt="博士犬" class="lead-image">
-  </div>
+                </tr>
+            </table>
+        </div>
+        <div class="section">
+            <h3>歳入の入力</h3>
+            <table>
+                <tr>
+                    <th>年度</th>
+                    <th>所得税</th><th>消費税</th><th>法人税</th><th>その他の税</th><th>税以外の<br>収入</th><th>借金<br>（国債）</th><th>合計</th>
 
-  <div class="card">
-    <div class="card-title">応能負担</div>
-    <div class="card-text">各自の能力に応じて負担すること</div>
-  </div>
+                </tr>
+                <tr>
+                    <td>今年</td>
+                    <td><input type="number" value="16" id="revenueThisYear0" value="16" disabled></td><td><input type="number" value="21" id="revenueThisYear1" value="21" disabled></td><td><input type="number" value="15" id="revenueThisYear2" value="15" disabled></td><td><input type="number" value="10" id="revenueThisYear3" value="10" disabled></td><td><input type="number" value="14" id="revenueThisYear4" value="14" disabled></td><td><input type="number" value="24" id="revenueThisYear5" value="24" disabled></td><td class="total-cell" id="revenueTotalThisYear">0</td>
 
-  <div class="card">
-    <div class="card-title">応益負担</div>
-    <div class="card-text">自分が受けた利益に応じたものを負担すること</div>
-  </div>
+                </tr>
+                <tr>
+                    <td>来年</td>
+                    <td><input type="number" value="16" id="revenueNextYear0"></td><td><input type="number" value="21" id="revenueNextYear1"></td><td><input type="number" value="15" id="revenueNextYear2"></td><td><input type="number" value="10" id="revenueNextYear3" value="10" disabled></td><td><input type="number" value="14" id="revenueNextYear4" value="14" disabled></td><td><input type="number" value="24" id="revenueNextYear5"></td><td class="total-cell" id="revenueTotalNextYear">0</td>
 
-  <div class="card">
-    <div class="card-title">水平的公平</div>
-    <div class="card-text">「負担能力が同じ人には、同じ負担を求めるのが公平」という考え方</div>
-  </div>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-  <div class="card">
-    <div class="card-title">垂直的公平</div>
-    <div class="card-text">「負担能力が高い人には、より大きな負担を求めるのが公平」という考え方</div>
-  </div>
+        </div> <!-- 「歳入の入力」セクション終了の直前 -->
+    
+    <div class="debt-info">
+    来年の借金総額は <span class="debt-amount" id="debtAmount">0</span> 万円増加します
+    <div id="warningMessage" class="warning-message"></div>
+</div>
 
-  <div class="card">
-    <div class="card-title">世代間の公平</div>
-    <div class="card-text">「現役世代と将来世代の受益と負担のバランスを保つ」という考え方</div>
-  </div>
 
+    <div class="charts">
+        <div class="section">
+            <h3>歳出の比較</h3>
+            <canvas id="spendingChart"></canvas>
+        </div>
+        <div class="section">
+            <h3>歳入の比較</h3>
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+function updateTotals(prefix, totalId) {
+    let total = 0;
+    document.querySelectorAll(`input[id^="${prefix}"]`).forEach(input => {
+        total += Number(input.value) || 0;
+    });
+    document.getElementById(totalId).textContent = total.toLocaleString()+ " 万円";
+}
+
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", function () {
+        updateTotals("spendingThisYear", "spendingTotalThisYear");
+        updateTotals("spendingNextYear", "spendingTotalNextYear");
+        updateTotals("revenueThisYear", "revenueTotalThisYear");
+        updateTotals("revenueNextYear", "revenueTotalNextYear");
+    });
+});
+
+// 初期合計計算
+updateTotals("spendingThisYear", "spendingTotalThisYear");
+updateTotals("spendingNextYear", "spendingTotalNextYear");
+updateTotals("revenueThisYear", "revenueTotalThisYear");
+updateTotals("revenueNextYear", "revenueTotalNextYear");
+
+        const categoriesSpending = ["年金", "医療", "子ども子育て", "介護", "地方交付金", "防衛", "公共事業", "教育", "その他", "借金返済"];
+        const categoriesRevenue = ["所得税", "消費税", "法人税", "その他の税", "税以外の収入", "借金（国債）"];
+        const pastelColors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff", "#fffffc", "#ffdfba"];
+
+        let spendingChart, revenueChart;
+
+        function getData(prefix) {
+            return Array.from(document.querySelectorAll(`input[id^="${prefix}"]`)).map(input => Number(input.value));
+        }
+
+        function updateDebtInfo() {
+    const debtIssuedNextYear = Number(document.getElementById("revenueNextYear5").value);
+    const debtRepaymentNextYear = Number(document.getElementById("spendingNextYear9").value);
+    const debtIncrease = debtIssuedNextYear - debtRepaymentNextYear;
+    document.getElementById("debtAmount").textContent = debtIncrease.toLocaleString();
+}
+
+
+        function createChart(canvasId, labels, prefix) {
+            const thisYearData = getData(prefix + "ThisYear");
+            const nextYearData = getData(prefix + "NextYear");
+
+            if (canvasId === "spendingChart" && spendingChart) spendingChart.destroy();
+            if (canvasId === "revenueChart" && revenueChart) revenueChart.destroy();
+
+            const ctx = document.getElementById(canvasId).getContext("2d");
+            const chart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["今年", "来年"],
+                    datasets: labels.map((label, index) => ({
+                        label: label,
+                        data: [thisYearData[index] || 0, nextYearData[index] || 0],
+                        backgroundColor: pastelColors[index],
+                        stack: 'stack1'
+                    }))
+                },
+                options: {
+                    indexAxis: "x",
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true }
+                    },
+                    plugins: {
+                        legend: { display: true },
+                        datalabels: {
+                            display: true,
+                            color: "black",
+                            anchor: "center",
+                            align: "center",
+                            formatter: (value) => value + " 万円"
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            if (canvasId === "spendingChart") spendingChart = chart;
+            if (canvasId === "revenueChart") revenueChart = chart;
+        }
+
+        document.querySelectorAll("input").forEach(input => {
+            input.addEventListener("input", function () {
+                createChart("spendingChart", categoriesSpending, "spending");
+                createChart("revenueChart", categoriesRevenue, "revenue");
+                updateDebtInfo();
+            });
+        });
+
+        createChart("spendingChart", categoriesSpending, "spending");
+        createChart("revenueChart", categoriesRevenue, "revenue");
+        updateDebtInfo();
+    });
+function updateWarningMessage() {
+    // 入力された歳出・歳入の合計を取得
+    const spendingTotal = Number(document.getElementById("spendingTotalNextYear").textContent.replace(/,/g, '')) || 0;
+    const revenueTotal = Number(document.getElementById("revenueTotalNextYear").textContent.replace(/,/g, '')) || 0;
+    const warningMessage = document.getElementById("warningMessage");
+
+    // 条件分岐してメッセージを表示
+    if (spendingTotal > revenueTotal) {
+        warningMessage.textContent = "歳出＞歳入となっているので修正してください😓";
+    } else if (spendingTotal < revenueTotal) {
+        warningMessage.textContent = "歳出＜歳入となっているので修正してください😓";
+    } else {
+        warningMessage.textContent = "歳出と歳入は一致しています🤗";
+    }
+}
+
+// 入力が変更されたら警告メッセージを更新
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", function () {
+        updateWarningMessage();
+    });
+});
+
+// 初回実行
+updateWarningMessage();
+function updateTotals(prefix, totalId) {
+    let total = 0;
+    document.querySelectorAll(`input[id^="${prefix}"]`).forEach(input => {
+        total += Number(input.value) || 0;
+    });
+    document.getElementById(totalId).textContent = total.toLocaleString();
+}
+
+// イベントリスナーを追加して、入力が変わるたびに合計と警告メッセージを更新
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", function () {
+        updateTotals("spendingNextYear", "spendingTotalNextYear");
+        updateTotals("revenueNextYear", "revenueTotalNextYear");
+        updateWarningMessage();
+    });
+});
+
+// 初回合計計算
+updateTotals("spendingNextYear", "spendingTotalNextYear");
+updateTotals("revenueNextYear", "revenueTotalNextYear");
+updateWarningMessage();
+function createWheel(wheelId, inputId, containerId) {
+            const wheel = document.getElementById(wheelId);
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            let selectedIndex = parseInt(input.value, 10);
+            const itemHeight = 40;
+
+            for (let i = 0; i <= 50; i++) {
+                let li = document.createElement("li");
+                li.textContent = i;
+                wheel.appendChild(li);
+            }
+
+            function updateWheel() {
+                const items = wheel.children;
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.toggle("selected", i === selectedIndex);
+                }
+                wheel.style.transform = `translateY(${(4 - selectedIndex) * itemHeight}px)`;
+                input.value = selectedIndex;
+            }
+
+            function handleScroll(event) {
+                if (event.deltaY > 0) {
+                    selectedIndex = Math.min(selectedIndex + 1, 50);
+                } else {
+                    selectedIndex = Math.max(selectedIndex - 1, 0);
+                }
+                updateWheel();
+            }
+
+            input.addEventListener("focus", function () {
+                const rect = input.getBoundingClientRect();
+                container.style.top = `${rect.bottom + window.scrollY}px`;
+                container.style.left = `${rect.left + window.scrollX}px`;
+                container.style.display = "block";
+                updateWheel();
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!container.contains(event.target) && event.target !== input) {
+                    container.style.display = "none";
+                }
+            });
+
+            container.addEventListener("wheel", handleScroll);
+            input.addEventListener("input", function () {
+                selectedIndex = Math.max(0, Math.min(50, parseInt(input.value, 10)));
+                updateWheel();
+            });
+
+            updateWheel();
+        }
+
+        createWheel("spendingWheel", "spendingInput", "spendingWheelContainer");
+        createWheel("revenueWheel", "revenueInput", "revenueWheelContainer");
+    </script>
 </body>
 </html>

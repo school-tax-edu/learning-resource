@@ -2,19 +2,97 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>税の使い道を考えよう</title>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <title>国の財政と歳入歳出</title>
   <style>
-    html, body {
+    body {
+      background-color: #fffae6;
+      font-family: "Arial", sans-serif;
       margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      background: #fffae6;
-      font-size: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* 追加：HOMEボタン */
+    h1 {
+      font-size: 2.8em;
+      color: #0044cc;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .lead-section {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .lead {
+      background-color: #d6ecfa;
+      padding: 15px 20px;
+      font-size: 1.4em;
+      border-radius: 10px;
+      line-height: 1.6;
+      max-width: 600px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+      /* アニメーション */
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+      animation-delay: 0.1s;
+    }
+
+    .lead-image {
+      width: 120px;
+      height: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+      animation-delay: 0.2s;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 850px;
+      background: white;
+      border-left: 10px solid #005bac;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:nth-of-type(1) { animation-delay: 0.3s; }
+    .card:nth-of-type(2) { animation-delay: 0.5s; }
+    .card:nth-of-type(3) { animation-delay: 0.7s; }
+
+    .card-title {
+      font-size: 1.6em;
+      font-weight: bold;
+      color: #005bac;
+      margin-bottom: 10px;
+    }
+
+    .card-text {
+      font-size: 1.3em;
+      line-height: 1.6;
+    }
+
     .home-button {
       position: fixed;
       top: 20px;
@@ -26,280 +104,55 @@
       border-radius: 20px;
       font-size: 18px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+      z-index: 999;
     }
 
     .home-button:hover {
       background-color: #cc0000;
     }
-
-    .intro-card {
-  max-width: 900px;
-  margin: 20px auto;
-  background: #fff;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-size: 1.1em;
-  line-height: 1.8em;
-  text-align: left;
-}
-h1  {
-      text-align: center;
-      font-size: 1.8em;
-      margin: 1em 0 0.5em;
-    }
-    .description {
-      max-width: 900px;
-      margin: 0 auto 1em;
-      font-size: 1.1em;
-      padding: 0 1em;
-      line-height: 1.8em;
-      text-align: center;
-    }
-    .ranking-container {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: repeat(5, auto);
-      gap: 0.5em;
-      justify-items: center;
-      align-items: center;
-      margin-bottom: 2em;
-      position: relative;
-    }
-    .ranking-container::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 500px;
-      height: 340px;
-      background-color: #4dd0e1;
-      transform: translate(-50%, -50%);
-      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-      opacity: 0.5;
-      z-index: 0;
-    }
-    .drop-zone {
-      width: 160px;
-      min-height: 50px;
-      background: #fff;
-      border: 2px solid #ccc;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 1.2em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      z-index: 1;
-    }
-    #rank1     { grid-column: 3; grid-row: 1; }
-    #rank2-1   { grid-column: 2; grid-row: 2; }
-    #rank2-2   { grid-column: 4; grid-row: 2; }
-    #rank3-1   { grid-column: 1; grid-row: 3; }
-    #rank3-2   { grid-column: 3; grid-row: 3; }
-    #rank3-3   { grid-column: 5; grid-row: 3; }
-    #rank4-1   { grid-column: 2; grid-row: 4; }
-    #rank4-2   { grid-column: 4; grid-row: 4; }
-    #rank5     { grid-column: 3; grid-row: 5; }
-
-    #cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6.66px;
-      justify-content: center;
-      margin: 1em auto 2em;
-      max-width: 800px;
-    }
-    .card {
-      width: 160px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background: #ffffff;
-      text-align: center;
-      cursor: grab;
-      font-weight: bold;
-      font-size: 1.1em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .card:active {
-      cursor: grabbing;
-    }
-    .reason {
-      max-width: 800px;
-      margin: 0 auto 1em;
-      padding: 0 1em;
-    }
-    .reason h2 {
-      font-size: 1.2em;
-      margin-bottom: 0.5em;
-    }
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      height: auto;
-      font-size: 1.1em;
-      padding: 0.75em;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      resize: none;
-    }
-    textarea:focus {
-      height: auto;
-      overflow-y: auto;
-      outline: none;
-    }
-    .btns {
-      text-align: center;
-      margin: 1.5em 0;
-    }
-    button {
-      margin: 0 0.75em;
-      padding: 0.6em 1.5em;
-      font-size: 1em;
-      border: none;
-      background: #007c91;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #005f6b;
-    }
-  
-@media screen and (max-width: 1024px) {
-  .ranking-container {
-    transform: scale(0.85);
-    transform-origin: center top;
-  }
-  .card, .drop-zone {
-    width: 140px;
-    font-size: 1em;
-  }
-}
-@media screen and (max-width: 768px) {
-  .ranking-container {
-    transform: scale(0.75);
-    transform-origin: center top;
-  }
-  .card, .drop-zone {
-    width: 120px;
-    font-size: 0.95em;
-  }
-  .description {
-    font-size: 1em;
-    padding: 0 0.5em;
-  }
-  textarea {
-    font-size: 1em;
-  }
-}
-
-</style>
+  </style>
 </head>
 <body>
-  <!-- HOMEボタン追加 -->
+
+  <h1>国の財政を見てみよう</h1>
+
+  <div class="lead-section">
+    <div class="lead">
+      1年間に得た国の収入を「歳入」、支出を「歳出」といい、<br>
+      国や地方公共団体が行う経済活動を「財政」といいます。
+    </div>
+    <img src="image53.png" alt="先生犬のキャラクター" class="lead-image">
+  </div>
+
+  <div class="card">
+    <div class="card-title">2025年度（令和7年度）予算の国の一般会計歳出</div>
+    <div class="card-text">
+      115.2兆円は、主に<br>
+      ①社会保障、②国債費、③地方交付税交付金等に使われており、<br>
+      これらで約3/4を占めています。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2025年度（令和7年度）予算の国の一般会計歳入</div>
+    <div class="card-text">
+      115.2兆円は、<span style="color:#005bac; font-weight:bold;">税収等と公債金（借金）</span>で構成されています。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">現在の財政状況</div>
+    <div class="card-text">
+      税収等では歳出全体の約2/3しか賄えておらず、<br>
+      残りの約1/3は<span style="color:#005bac; font-weight:bold;">公債金（借金）</span>に依存しています。<br><br>
+      この借金の返済には将来世代の税収等が充てられることになるため、<br>
+      将来世代へ負担を先送りしていることになります。
+    </div>
+  </div>
+
   <button class="home-button" onclick="location.href='../main.html'">HOME</button>
 
-  <h1>税の使い道を考えよう</h1>
-  <div class="intro-card">
-  以下に示した「税の使い方」9つについて、あなたが思う重要度や必要度に応じてランキング（順位付け）し、上から最も優先順位が高いものを1つ、2番目を2つ、3番目を3つ、4番目を2つ、最も低いと思うものを選んで①から⑤に配置し、理由を書いてみましょう。
-</div>
-  <div class="ranking-container">
-    <div class="drop-zone" id="rank1">①</div>
-    <div class="drop-zone" id="rank2-1">②</div>
-    <div class="drop-zone" id="rank2-2">②</div>
-    <div class="drop-zone" id="rank3-1">③</div>
-    <div class="drop-zone" id="rank3-2">③</div>
-    <div class="drop-zone" id="rank3-3">③</div>
-    <div class="drop-zone" id="rank4-1">④</div>
-    <div class="drop-zone" id="rank4-2">④</div>
-    <div class="drop-zone" id="rank5">⑤</div>
-  </div>
-  <div id="cards">
-    <div class="card" id="card-A" draggable="true">医療・介護</div>
-    <div class="card" id="card-B" draggable="true">環境対策</div>
-    <div class="card" id="card-C" draggable="true">教育</div>
-    <div class="card" id="card-D" draggable="true">景気対策</div>
-    <div class="card" id="card-E" draggable="true">子育て支援</div>
-    <div class="card" id="card-F" draggable="true">公共事業</div>
-    <div class="card" id="card-G" draggable="true">災害対策</div>
-    <div class="card" id="card-H" draggable="true">治安</div>
-    <div class="card" id="card-I" draggable="true">年金</div>
-  </div>
-  <div class="reason">
-    <h2>〈理由〉</h2>
-    <textarea id="opinion" placeholder="ここに理由を入力してください"></textarea>
-  </div>
-  <div class="btns">
-    <button onclick="resetAll()">リセット</button>
-    <button onclick="saveAsImage()">意見を画像として保存</button>
-  </div>
-  <script>
-    const cards = document.querySelectorAll('.card');
-    const zones = document.querySelectorAll('.drop-zone');
-    function addDragEvents(card) {
-      card.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', card.id);
-        card.classList.add('dragging');
-        setTimeout(() => card.style.display = 'none', 0);
-      });
-      card.addEventListener('dragend', () => {
-        card.classList.remove('dragging');
-        card.style.display = 'block';
-      });
-    }
-    cards.forEach(addDragEvents);
-    zones.forEach(zone => {
-      zone.addEventListener('dragover', e => {
-        e.preventDefault();
-        zone.classList.add('highlight');
-      });
-      zone.addEventListener('dragleave', () => zone.classList.remove('highlight'));
-      
-zone.addEventListener('drop', e => {
-  e.preventDefault();
-  zone.classList.remove('highlight');
-  const id = e.dataTransfer.getData('text/plain');
-  const dragged = document.getElementById(id);
-  if (!zone.querySelector('.card') || zone.contains(dragged)) {
-    if (!zone.contains(dragged)) {
-      zone.appendChild(dragged);
-    }
-  } else {
-    alert('この順位にはこれ以上置けません。');
-  }
-});
-
-    });
-    function resetAll() {
-      const original = document.getElementById('cards');
-      zones.forEach(zone => {
-        [...zone.querySelectorAll('.card')].forEach(card => original.appendChild(card));
-      });
-      document.getElementById('opinion').value = '';
-    }
-    function saveAsImage() {
-      html2canvas(document.querySelector('.reason')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'opinion.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
-    // Prevent font-size change on paste
-    document.getElementById('opinion').addEventListener('paste', (e) => {
-      e.preventDefault();
-      const text = (e.clipboardData || window.clipboardData).getData('text');
-      document.execCommand('insertText', false, text);
-    });
-  </script>
 </body>
 </html>

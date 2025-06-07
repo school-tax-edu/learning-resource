@@ -1,344 +1,87 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>人生の出来事と税</title>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
-function resetCards() {
-  const cardPool = document.getElementById('cardPool');
-  const dropZones = document.querySelectorAll('.drop-zone');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生活と税金の関わりについて考えてみよう</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fffae6;
+            text-align: center;
+        }
 
-  dropZones.forEach(zone => {
-    const card = zone.querySelector('.card');
-    if (card) {
-      cardPool.appendChild(card);
-    }
-    zone.innerHTML = ''; // ドロップゾーンを空にする
-  });
-}
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
 
-</script>
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #fffae6;
-      padding: 20px;
-      margin: 0;
-    }
-    h1 {
-      text-align: center;
-      font-size: 1.8em;
-      margin-bottom: 0.5em;
-    }
+        img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
 
-    /* 追加：HOMEボタンのスタイル */
-    .home-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 1000;
-    }
+        /* HOMEボタンのスタイル */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #cc0000;
+        }
 
-    .home-button:hover {
-      background-color: #cc0000;
-    }
+        /* アニメーション定義 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    /* 既存スタイル（省略せずそのまま保持） */
-    .timeline {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-      margin: 2em 0;
-      padding: 1em;
-      border-top: 4px solid #007c91;
-    }
-    .age {
-      text-align: center;
-      width: 10%;
-      position: relative;
-    }
-    .age::before {
-      content: "";
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 10px;
-      background: #007c91;
-    }
-    .drop-zone {
-      height: 60px;
-      margin-top: 10px;
-      border: 2px dashed #bbb;
-      border-radius: 6px;
-      background: #fff;
-      text-align: center;
-      padding: 0.5em;
-      font-size: 0.9em;
-    }
-    .card-pool {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 2em;
-    }
-    .card {
-      background: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px 15px;
-      font-weight: bold;
-      cursor: grab;
-      white-space: nowrap;
-    }
-    .tax-input {
-      width: 100%;
-      margin-top: 10px;
-    }
-    textarea {
-      width: 100%;
-      height: 60px;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1em;
-      resize: none;
-    }
-    .buttons {
-      text-align: center;
-      margin-top: 2em;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 1em;
-      background: #007c91;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #005f6b;
-    }
-  
-@media screen and (max-width: 1024px) {
-  .timeline {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .age {
-    width: 30%;
-  }
-  .card {
-    font-size: 0.95em;
-    padding: 8px 12px;
-  }
-  textarea {
-    font-size: 0.95em;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .age {
-    width: 45%;
-  }
-  .card {
-    font-size: 0.9em;
-    padding: 6px 10px;
-  }
-  .timeline {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-</style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- 追加：HOMEボタン -->
-  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+    <h1>消費税の納め方</h1>
+    <img src="page4image.png" alt="生活に関わる税スライド画像">
 
-  <h1>人生の出来事と税</h1>
-  <p style="text-align:center;">人生の出来事を年表の上にドラッグし、関係する税を下の欄に書いてみよう。</p>
-
-  <div class="timeline" id="timeline">
-    
-    <div class="age">
-      10歳
-      <div class="drop-zone" id="drop-10"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      20歳
-      <div class="drop-zone" id="drop-20"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      30歳
-      <div class="drop-zone" id="drop-30"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      40歳
-      <div class="drop-zone" id="drop-40"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      50歳
-      <div class="drop-zone" id="drop-50"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      60歳
-      <div class="drop-zone" id="drop-60"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      70歳
-      <div class="drop-zone" id="drop-70"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-
-    <div class="age">
-      80歳
-      <div class="drop-zone" id="drop-80"></div>
-      <div class="tax-input">
-        <textarea placeholder="関係する税を入力"></textarea>
-      </div>
-    </div>
-    
-  </div>
-
-  <div class="card-pool" id="cardPool">
-    <div class="card" draggable="true">初めての買い物</div>
-    <div class="card" draggable="true">就職</div>
-    <div class="card" draggable="true">温泉に行く</div>
-    <div class="card" draggable="true">車を買う</div>
-    <div class="card" draggable="true">結婚</div>
-    <div class="card" draggable="true">出産</div>
-    <div class="card" draggable="true">子育て</div>
-    <div class="card" draggable="true">家を買う</div>
-    <div class="card" draggable="true">退職</div>
-    <div class="card" draggable="true">起業</div>
-    <div class="card" draggable="true">遺産相続</div>
-  </div>
-
-  <div class="buttons">
-    <button onclick="saveImage()">意見を画像として保存</button>
-    <button onclick="resetCards()">リセット</button>
-  </div>
-
-  <script>
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', card.outerHTML);
-        card.classList.add('dragging');
-        setTimeout(() => card.style.display = 'none', 0);
-      });
-      card.addEventListener('dragend', () => {
-        card.classList.remove('dragging');
-        card.style.display = 'inline-block';
-      });
-    });
-
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-      zone.addEventListener('dragover', e => {
-        e.preventDefault();
-        zone.style.background = '#e0f7fa';
-      });
-      zone.addEventListener('dragleave', () => {
-        zone.style.background = '#fff';
-      });
-      zone.addEventListener('drop', e => {
-        e.preventDefault();
-        const data = e.dataTransfer.getData('text/plain');
-        const temp = document.createElement('div');
-        temp.innerHTML = data;
-        const card = temp.firstChild;
-        if (!zone.querySelector('.card')) {
-          card.setAttribute('draggable', 'true');
-          card.classList.add('card');
-          card.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/plain', card.outerHTML);
-            card.classList.add('dragging');
-            setTimeout(() => card.style.display = 'none', 0);
-          });
-          card.addEventListener('dragend', () => {
-            card.classList.remove('dragging');
-            card.style.display = 'inline-block';
-          });
-          zone.appendChild(card);
-          const original = document.querySelector('.card.dragging');
-          if (original && original.parentNode) {
-            original.parentNode.removeChild(original);
-          }
-        } else {
-          alert("この年齢にはすでに出来事が設定されています。");
-        }
-        zone.style.background = '#fff';
-      });
-    });
-
-    function saveImage() {
-      html2canvas(document.body).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'jinsei_to_zei.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
-  
-function resetCards() {
-  const cardPool = document.getElementById('cardPool');
-  const dropZones = document.querySelectorAll('.drop-zone');
-
-  dropZones.forEach(zone => {
-    const card = zone.querySelector('.card');
-    if (card) {
-      cardPool.appendChild(card);
-    }
-    zone.innerHTML = ''; // ドロップゾーンを空にする
-  });
-}
-
-</script>
+    <!-- HOMEボタン -->
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
 </body>
 </html>

@@ -2,97 +2,74 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>国の財政と歳入歳出</title>
+  <title>楽しく学ぼう！税金の歴史</title>
   <style>
     body {
-      background-color: #fffae6;
       font-family: "Arial", sans-serif;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      line-height: 1.8;
+      margin: 20px;
+      background-color: #fffae6;
     }
 
     h1 {
-      font-size: 2.8em;
-      color: #0044cc;
-      margin-bottom: 20px;
       text-align: center;
-    }
-
-    .lead-section {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .lead {
-      background-color: #d6ecfa;
-      padding: 15px 20px;
-      font-size: 1.4em;
-      border-radius: 10px;
-      line-height: 1.6;
-      max-width: 600px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-
-      /* アニメーション */
+      color: #ff5733;
+      font-size: 32px;
       opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.6s ease forwards;
-      animation-delay: 0.1s;
+      animation: fadeIn 1s ease-out forwards;
     }
 
-    .lead-image {
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      list-style-type: none;
+      padding: 0;
+      margin-top: 30px;
+    }
+
+    .timeline li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .timeline li:nth-child(1) { animation-delay: 0.3s; }
+    .timeline li:nth-child(2) { animation-delay: 0.5s; }
+    .timeline li:nth-child(3) { animation-delay: 0.7s; }
+    .timeline li:nth-child(4) { animation-delay: 0.9s; }
+    .timeline li:nth-child(5) { animation-delay: 1.1s; }
+    .timeline li:nth-child(6) { animation-delay: 1.3s; }
+    .timeline li:nth-child(7) { animation-delay: 1.5s; }
+    .timeline li:nth-child(8) { animation-delay: 1.7s; }
+
+    .timeline li img {
       width: 120px;
       height: auto;
+      border-radius: 10px;
+      margin-right: 15px;
+    }
+
+    .quiz {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      border: 3px solid #2ecc71;
+      border-radius: 10px;
+      background-color: #fff;
       opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.6s ease forwards;
-      animation-delay: 0.2s;
+      animation: fadeInUp 1s ease-out forwards;
+      animation-delay: 2s;
     }
 
-    .card {
-      width: 90%;
-      max-width: 850px;
-      background: white;
-      border-left: 10px solid #005bac;
-      border-radius: 12px;
-      padding: 20px 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card:nth-of-type(1) { animation-delay: 0.3s; }
-    .card:nth-of-type(2) { animation-delay: 0.5s; }
-    .card:nth-of-type(3) { animation-delay: 0.7s; }
-
-    .card-title {
-      font-size: 1.6em;
-      font-weight: bold;
-      color: #005bac;
-      margin-bottom: 10px;
-    }
-
-    .card-text {
-      font-size: 1.3em;
-      line-height: 1.6;
-    }
-
+    /* HOMEボタンのスタイル */
     .home-button {
       position: fixed;
       top: 20px;
@@ -104,63 +81,141 @@
       border-radius: 20px;
       font-size: 18px;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
       transition: background-color 0.3s;
-      z-index: 999;
     }
 
     .home-button:hover {
       background-color: #cc0000;
     }
+
+    /* クイズのフィードバック */
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .incorrect {
+      color: red;
+    }
+
+    /* アニメーション定義 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
 
-  <h1>財政の悪化</h1>
+<!-- HOMEボタン -->
+<button class="home-button" onclick="location.href='../main.html'">HOME</button>
 
-  <div class="lead-section">
-    <div class="lead">
-      歳出を税収等で賄えない状況は「財政の悪化」といえます。では、なぜ財政は悪化したのでしょうか。財政構造がどのように変化したのか見てみましょう。
+<h1>楽しく学ぼう！税金の歴史</h1>
+<p style="text-align:center;">昔の税金ってどんなものだったのかな？歴史をたどってみよう！</p>
+
+<ul class="timeline">
+  <li>
+    <img src="image1.jpg" alt="昔の農民のイラスト" />
+    <div>
+      <h2>大化の改新（7世紀後半）</h2>
+      <p>この時代、日本ではじめての本格的な税の制度「租」「庸」「調」ができました。</p>
     </div>
-    <img src="image53.png" alt="先生犬のキャラクター" class="lead-image">
-  </div>
-
-  <div class="card">
-    <div class="card-title">社会保障費の増加</div>
-    <div class="card-text">
-      1990年度（平成２年度）と現在の歳出を比較すると、<br>
-社会保障関係費や国債費が大きく伸びています。<br>
-特に社会保障は、年金、医療、介護、こども・子育てなどの分野に分けられ、<br>
-国の一般会計歳出の約1/3を占める最大の支出項目となっています。
+  </li>
+  <li>
+    <img src="image2.jpg" alt="武士と農民のイラスト" />
+    <div>
+      <h2>鎌倉・室町時代（12～16世紀）</h2>
+      <p>庶民の税の負担が増え、「年貢」として米の半分近くを納めることが一般的でした。</p>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">歳入の不足</div>
-    <div class="card-text">
-      歳出の増加に対し歳入は、経済成長の停滞などが影響して<br>税収の伸びが見合っておらず、不足分を借金に頼っているため、<br>公債金は約6倍と大幅に増加しています。
+  </li>
+  <li>
+    <img src="image5.jpg" alt="太閤検地のイラスト" />
+    <div>
+      <h2>安土桃山時代（16世紀後半）</h2>
+      <p>豊臣秀吉が「太閤検地」を行い、公正な年貢を徴収する仕組みを整えました。</p>
     </div>
-  </div>
+  </li>
+  <li>
+    <img src="image3.jpg" alt="江戸時代の商人のイラスト" />
+    <div>
+      <h2>江戸時代（17～19世紀）</h2>
+      <p>農民の年貢のほかに、商人も「運上」と呼ばれる税を支払いました。</p>
+    </div>
+  </li>
+  <li>
+    <img src="image6.jpg" alt="地租改正のイラスト" />
+    <div>
+      <h2>明治時代（19世紀後半）</h2>
+      <p>「地租改正」により、お米ではなくお金で税を納める仕組みになりました。</p>
+    </div>
+  </li>
+  <li>
+    <img src="image7.jpg" alt="戦後の税制改革のイラスト" />
+    <div>
+      <h2>昭和時代（20世紀）</h2>
+      <p>戦後の税制改革で、所得税が導入されました。</p>
+    </div>
+  </li>
+  <li>
+    <img src="image8.jpg" alt="消費税導入のイラスト" />
+    <div>
+      <h2>平成時代（1989年～2019年）</h2>
+      <p>1989年（平成元年）に消費税が導入され、2019年（令和元年）には10%に引き上げられました。</p>
+    </div>
+  </li>
+  <li>
+    <img src="image9.jpg" alt="キャッシュレス決済のイラスト" />
+    <div>
+      <h2>令和時代（2019年～現在）</h2>
+      <p>キャッシュレス決済の普及により、電子マネーで税金を支払うことも増えました。</p>
+    </div>
+  </li>
+</ul>
 
-  <button style="
-  padding: 14px 28px;
-  background-color: #007bff;
-  color: white;
-  font-size: 18px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
-  animation: fadeInUp 0.6s ease forwards;
-  opacity: 0;
-  transform: translateY(30px);
-  animation-delay: 0.9s;
-" onclick="location.href='graph/index.html'">
-  1990年の歳入・歳出を見てみよう
-</button>
+<div class="quiz">
+  <h2>クイズに挑戦！</h2>
+  <p>日本で最初に消費税が導入されたのはいつでしょう？</p>
+  <label><input type="radio" name="quiz" value="1989年"> 1989年（平成元年）</label>
+  <label><input type="radio" name="quiz" value="1997年"> 1997年（平成9年）</label>
+  <label><input type="radio" name="quiz" value="2014年"> 2014年（平成26年）</label>
+  <label><input type="radio" name="quiz" value="2019年"> 2019年（令和元年）</label>
+  <br><br>
+  <button onclick="checkAnswer()">回答する</button>
+  <div id="result" class="result"></div>
+</div>
 
-  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+<script>
+  function checkAnswer() {
+    const correctAnswer = '1989年';
+    const selectedAnswer = document.querySelector('input[name="quiz"]:checked');
+    const resultDiv = document.getElementById('result');
+
+    if (selectedAnswer) {
+      resultDiv.style.display = 'block';
+      if (selectedAnswer.value === correctAnswer) {
+        resultDiv.textContent = '正解です！1989年に消費税が導入されました。';
+        resultDiv.className = 'result correct';
+      } else {
+        resultDiv.textContent = '不正解です。もう一度考えてみましょう。';
+        resultDiv.className = 'result incorrect';
+      }
+    } else {
+      resultDiv.textContent = '選択肢を選んでください。';
+      resultDiv.className = 'result incorrect';
+    }
+  }
+</script>
 
 </body>
 </html>

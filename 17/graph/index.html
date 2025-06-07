@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>高齢化率の推移と解説</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body {
+      font-family: sans-serif;
+      background: #fefefe;
+      margin: 2rem;
+      animation: fadeIn 1s ease-in;
+      transition: background-color 1s ease;
+    }
+    h2 { margin-bottom: 1rem; animation: fadeIn 1.3s ease-in; }
+    canvas { max-width: 100%; height: 400px; animation: fadeIn 1.5s ease-in; }
+    .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 1rem; align-items: start; animation: fadeIn 1.8s ease-in; }
+    .graph-area { grid-column: 1 / 2; }
+    .controls { margin: 1rem 0; display: flex; align-items: center; gap: 1rem; }
+    .info-column { display: flex; flex-direction: column; gap: 1rem; }
+    .info-box { background: #eef; border-radius: 8px; padding: 1rem; opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .info-box.visible { opacity: 1; transform: translateY(0); }
+    ul { padding-left: 1.2em; }
+    @media (max-width: 600px) {
+      .controls { flex-direction: column; align-items: flex-start; }
+      .main-grid { display: block; }
+    }
+    .home-button {
+      position: fixed; bottom: 20px; right: 20px;
+      padding: 14px 28px; background-color: red; color: white;
+      border: none; border-radius: 20px;
+      font-size: 16px; cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.3s, transform 0.3s;
+      z-index: 999;
+      animation: fadeIn 2s ease-in;
+    }
+    .home-button:hover { background-color: #cc0000; transform: scale(1.05); }
+  </style>
+</head>
+<body>
+
+  <h2>日本と世界の高齢化率の推移</h2>
+  <p style="font-size: 0.9em; color: gray;">
+    ※データ出所：総務省統計局「人口推計」、国連「World Population Prospects 2022」などを基に作成
+  </p>
+
+  <div class="main-grid">
+    <div class="graph-area">
+      <canvas id="agingChart"></canvas>
+      <div class="controls">
+        <label for="yearSlider"><strong>年を選ぼう：</strong></label>
+        <input type="range" id="yearSlider" min="1990" max="2050" step="5" value="2024">
+        <span id="selectedYear">2024</span>年
+      </div>
+    </div>
+    <div class="info-column">
+      <div class="info-box" id="rateBox"></div>
+      <div class="info-box" id="noteBox"></div>
+    </div>
+  </div>
+
+  <script>
+    const labels = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2024, 2025, 2030, 2035, 2040, 2045, 2050];
+    const dataset = {
+      '日本':     [12, 15, 17.3, 20.2, 23.0, 26.6, 29.0, 29.4, 30, 31.5, 33.5, 35.0, 36.2, 37],
+      'ドイツ':   [15.2, 15.6, 17.2, 19.0, 20.5, 21.0, 22.0, 23.5, 24, 26.5, 28.0, 29.0, 29.5, 30.5],
+      'フランス': [13.8, 15.4, 16.0, 16.5, 17.0, 19.0, 21.0, 22.5, 23, 25.5, 27.0, 28.0, 28.5, 29.5],
+      'イギリス': [15.8, 15.9, 16.1, 16.3, 16.5, 18.0, 19.0, 20.3, 21, 23.0, 24.5, 25.2, 25.7, 26.5],
+      'アメリカ': [12.1, 12.3, 12.2, 12.4, 13.0, 14.5, 16.2, 18.3, 19, 21.0, 22.2, 23.0, 23.5, 24.2]
+    };
+
+    const colors = {
+      '日本': 'red',
+      'ドイツ': 'gold',
+      'フランス': 'hotpink',
+      'イギリス': 'cornflowerblue',
+      'アメリカ': 'purple'
+    };
+
+    let selectedYear = 2024;
+
+    const ctx = document.getElementById('agingChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: Object.keys(dataset).map(country => ({
+          label: country,
+          data: dataset[country],
+          borderColor: colors[country],
+          tension: 0.2,
+          fill: false
+        }))
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 1500,
+          easing: 'easeOutCubic'
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: context => `${context.dataset.label}: ${context.formattedValue}％`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 40,
+            title: {
+              display: true,
+              text: '高齢化率（％）'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: '年'
+            },
+            ticks: {
+              color: function(context) {
+                return context.tick.label == selectedYear ? 'red' : '#666';
+              },
+              font: function(context) {
+                if (context.tick.label == selectedYear) {
+                  return {
+                    size: 14,
+                    weight: 'bold'
+                  };
+                } else {
+                  return {
+                    size: 12,
+                    weight: 'normal'
+                  };
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    function updateInfo(year) {
+      selectedYear = year;
+      const index = labels.indexOf(year);
+      document.getElementById('selectedYear').textContent = year;
+
+      const rateBox = document.getElementById('rateBox');
+      const noteBox = document.getElementById('noteBox');
+
+      let rateHtml = `<h4>${year}年の高齢化率</h4><ul>`;
+      for (const country in dataset) {
+        rateHtml += `<li><strong>${country}</strong>：${dataset[country][index]}％</li>`;
+      }
+      rateHtml += `</ul>`;
+      rateBox.innerHTML = rateHtml;
+
+      let note = '';
+      if (year <= 2000) {
+        note = 'このころは、まだ日本の高齢化率は20％以下。いまより若い人が多かったんだね。';
+      } else if (year <= 2025) {
+        note = '高齢化がぐんぐん進んできたよ。日本は世界でもっとも高齢化が進んだ国だよ。';
+      } else {
+        note = '将来の予測では、日本の高齢化率はさらに上がるみたい。助け合いがますます大切になるね。';
+      }
+      noteBox.innerHTML = `<h4>注釈</h4><p>${note}</p>`;
+
+      rateBox.classList.remove("visible");
+      noteBox.classList.remove("visible");
+      void rateBox.offsetWidth;
+      void noteBox.offsetWidth;
+      rateBox.classList.add("visible");
+      noteBox.classList.add("visible");
+
+      let bgColor = '#ffffff';
+      if (year <= 2000) {
+        bgColor = '#e0f7fa';
+      } else if (year <= 2025) {
+        bgColor = '#fff3e0';
+      } else {
+        bgColor = '#f3e5f5';
+      }
+      document.body.style.backgroundColor = bgColor;
+
+      chart.update();
+    }
+
+    document.getElementById('yearSlider').addEventListener('input', (e) => {
+      const year = parseInt(e.target.value);
+      updateInfo(year);
+    });
+
+    updateInfo(2024);
+  </script>
+
+  <button class="home-button" onclick="location.href='../../main.html'">HOME</button>
+</body>
+</html>

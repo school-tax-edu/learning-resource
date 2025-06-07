@@ -1,79 +1,202 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>税金の使いみちはどうやって決めるの？</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #fffae6;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            overflow: hidden;
-        }
-        h1 {
-            margin-top: 40px;
-            font-size: 28px;
-            text-align: center;
-        }
-        img {
-            max-width: 90vw;
-            max-height: 80vh;
-            object-fit: contain;
-            margin-top: 20px;
-        }
-
-        /* HOMEボタンのスタイル */
-        .home-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            background-color: red;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: background-color 0.3s;
-        }
-        .home-button:hover {
-            background-color: #cc0000;
-        }
-    
-        /* アニメーション */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .fadeIn {
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
-        }
-        .fadeInUp-delayed {
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
-        }
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国の歳入・歳出グラフ</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2 {
+      margin: 30px 10px 10px;
+    }
+    .nav {
+      margin: 20px;
+    }
+    .nav a {
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      background: #007BFF;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin: 5px;
+      display: inline-block;
+    }
+    .chart-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 20px;
+    }
+    canvas {
+      width: 90vw !important;
+      height: auto !important;
+      max-width: 600px;
+      max-height: 600px;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .info-box {
+      background-color: #fff;
+      padding: 30px;
+      text-align: left;
+      max-width: 900px;
+      margin: 40px auto;
+      box-sizing: border-box;
+    }
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+      z-index: 1000;
+    }
+    .home-button:hover {
+      background-color: #cc0000;
+    }
+    @media (max-width: 600px) {
+      .nav a {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      h2 {
+        font-size: 1.2em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1 class="fadeIn">税金の使いみちはどうやって決めるの？</h1>
-    <img class="fadeInUp-delayed" src="page10_image.png" alt="税金の使いみちスライド">
+  <h1 class="fade-in">国の歳入・歳出をみてみよう！</h1>
+  <div class="nav fade-in">
+    <a href="prefecture-fukui-index.html">福井県の予算を見る</a>
+    <a href="comparison chart/fukui.html">市町村の予算を見る</a>
+  </div>
+  <div class="chart-wrapper fade-in">
+    <div>
+      <h2>国の歳入（令和７年度）</h2>
+      <canvas id="kenRevenue"></canvas>
+    </div>
+    <div>
+      <h2>国の歳出（令和７年度）</h2>
+      <canvas id="kenExpenditure"></canvas>
+    </div>
+  </div>
+  <div class="info-box fade-in">
+    <h2>グラフの見方</h2>
+    <p><strong>歳入：</strong>「消費税」「所得税」「法人税」などの税収のほか、「公債金収入」（国債など借入金）、その他の収入を含みます。</p>
+    <p><strong>歳出：</strong>「社会保障関係費」や「防衛関係費」などの支出に加え、「国債費」（過去の借金の返済）、「地方交付税交付金等」などを含みます。</p>
+    <p>中央の金額表示はグラフ全体の合計額を示しています。</p>
+  </div>
+  <button class="home-button fade-in" onclick="location.href='../main.html'">HOME</button>
+  <script>
+    Chart.register(ChartDataLabels);
 
-    <!-- HOMEボタン -->
-    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+    function createDonutChart(id, labels, data, colors, title) {
+      const total = data.reduce((a, b) => a + b, 0);
+      new Chart(document.getElementById(id), {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{ data: data, backgroundColor: colors }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: title,
+              font: { size: 18 }
+            },
+            legend: { position: 'bottom' },
+            datalabels: {
+              color: '#000',
+              font: { size: 14 },
+              formatter: (value, context) => `${context.chart.data.labels[context.dataIndex]}\n${value}億円`
+            },
+            doughnutCenterText: {
+              display: true,
+              text: `合計\n${total.toLocaleString()}億円`
+            }
+          }
+        },
+        plugins: [
+          {
+            id: 'doughnutCenterText',
+            beforeDraw: function(chart) {
+              const width = chart.width,
+                    height = chart.height,
+                    ctx = chart.ctx;
+              ctx.restore();
+              ctx.font = "bold 20px sans-serif";
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              const centerX = width / 2;
+              const centerY = height / 2;
+              const lines = chart.options.plugins.doughnutCenterText.text.split("\n");
+              ctx.fillStyle = 'red';
+              const lineHeight = 24;
+              const totalHeight = lineHeight * lines.length;
+              lines.forEach((line, i) => {
+                const y = centerY - totalHeight / 2 + i * lineHeight;
+                ctx.fillText(line, centerX, y);
+              });
+              ctx.save();
+            }
+          },
+          ChartDataLabels
+        ]
+      });
+    }
+
+    createDonutChart("kenRevenue",
+      ["消費税", "所得税", "法人税", "その他の税", "公債金収入", "その他"],
+      [249080, 226660, 192450, 110000, 286471, 87317],
+      ["#42a5f5", "#ef5350", "#66bb6a", "#ab47bc", "#bdbdbd", "#cfd8dc"],
+      "国の歳入の内訳（総額 115兆1,978億円）");
+
+    createDonutChart("kenExpenditure",
+      ["社会保障関係費", "公共事業関係費", "文教及び科学振興費", "防衛関係費", "その他", "地方交付税交付金等", "国債費"],
+      [382938, 60858, 56560, 86691, 94024, 188728, 282179],
+      ["#ffee58", "#90caf9", "#a5d6a7", "#f48fb1",  "#ffab91", "#ce93d8", "#81d4fa"],
+      "国の歳出の内訳（総額 115兆1,978億円）");
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const fadeElements = document.querySelectorAll('.fade-in');
+      fadeElements.forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, 200 + i * 200);
+      });
+    });
+  </script>
 </body>
 </html>

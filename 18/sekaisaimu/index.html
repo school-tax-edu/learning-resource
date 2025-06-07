@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>主な国の債務残高（対GDP比）の推移</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body {
+      font-family: sans-serif;
+      background: #fefefe;
+      margin: 2rem;
+      animation: fadeIn 1s ease-in;
+      transition: background-color 1s ease;
+    }
+    h2 { margin-bottom: 1rem; animation: fadeIn 1.2s ease-in; }
+    canvas { max-width: 100%; height: 400px; animation: fadeIn 1.5s ease-in; }
+    .main-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 1rem; align-items: start; animation: fadeIn 1.8s ease-in; }
+    .graph-area { grid-column: 1 / 2; }
+    .controls { margin: 1rem 0; display: flex; align-items: center; gap: 1rem; }
+    .info-column { display: flex; flex-direction: column; gap: 1rem; }
+    .info-box { background: #eef; border-radius: 8px; padding: 1rem; opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .info-box.visible { opacity: 1; transform: translateY(0); }
+    ul { padding-left: 1.2em; }
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 14px 28px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.3s, transform 0.3s;
+      z-index: 999;
+      animation: fadeIn 2s ease-in;
+    }
+    .back-button:hover {
+      background-color: #cc0000;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>主な国の債務残高（対GDP比）の推移</h2>
+  <p style="font-size: 0.9em; color: gray;">
+    ※データ出所：財務省「日本の財政関係資料（令和６年４月）」を基に作成
+  </p>
+
+  <div class="main-grid">
+    <div class="graph-area">
+      <canvas id="debtChart"></canvas>
+      <div class="controls">
+        <label for="yearSlider"><strong>年を選ぼう：</strong></label>
+        <input type="range" id="yearSlider" min="2008" max="2024" step="1" value="2024">
+        <span id="selectedYear">2024</span>年
+      </div>
+    </div>
+    <div class="info-column">
+      <div class="info-box" id="rateBox"></div>
+      <div class="info-box" id="noteBox"></div>
+    </div>
+  </div>
+
+  <script>
+    const labels = [
+      2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015,
+      2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024
+    ];
+
+    const dataset = {
+      '日本':    [181, 200, 213, 225, 226, 223, 226, 225, 226, 227, 229, 230, 255.1, 260.1, 255.2, 255.2, 251.9],
+      'イタリア':[110, 120, 125, 130, 133, 134, 135, 136, 136, 135, 135, 135, 155, 148, 145, 144, 143.2],
+      '米国':    [70, 82, 90, 94, 96, 100, 102, 104, 105, 105, 106, 108, 128, 124, 126, 127, 126.9],
+      'フランス':[68, 78, 82, 85, 87, 90, 92, 94, 96, 97, 98, 98, 114, 111, 110, 111, 110.5],
+      '英国':    [65, 76, 80, 83, 86, 88, 90, 92, 93, 94, 94, 95, 107, 104, 106, 106, 105.9],
+      'カナダ':  [70, 80, 83, 85, 84, 82, 80, 78, 76, 75, 74, 73, 95, 100, 103, 103, 103.3],
+      'ドイツ':  [67, 75, 80, 83, 82, 80, 78, 76, 74, 72, 70, 68, 75, 70, 66, 65, 64]
+    };
+
+    const comments2024 = {
+      '日本': '国の債務はGDP比250％超と世界最高水準。財政の持続可能性が課題です。',
+      '米国': '政策金利上昇の中でも依然として債務比率は高め。財政赤字が議論に。',
+      'ドイツ': '借金を抑制する姿勢が強く、比率は安定。健全財政を志向。',
+      'イタリア': '高水準の債務が続いており、経済成長とのバランスが問われています。',
+      'フランス': '財政赤字拡大により債務比率も増加。改革の必要性が指摘されています。',
+      '英国': 'インフレやエネルギー価格の高騰もあり、財政に負担がかかっています。',
+      'カナダ': 'コロナ後の回復で改善傾向もあるが、依然として高水準を維持しています。'
+    };
+
+    const colors = {
+      '日本': 'red',
+      'イタリア': 'green',
+      '米国': 'blue',
+      'フランス': 'navy',
+      '英国': 'purple',
+      'カナダ': 'orange',
+      'ドイツ': 'goldenrod'
+    };
+
+    let selectedYear = 2024; // 🔥
+
+    const ctx = document.getElementById('debtChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: Object.keys(dataset).map(country => ({
+          label: country,
+          data: dataset[country],
+          borderColor: colors[country],
+          fill: false,
+          tension: 0.2
+        }))
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart'
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: context => `${context.dataset.label}: ${context.formattedValue}％`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 300,
+            title: {
+              display: true,
+              text: '対GDP比（％）'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: '年'
+            },
+            ticks: {
+              color: function(context) {
+                return context.tick.label == selectedYear ? 'red' : '#666';
+              },
+              font: function(context) {
+                if (context.tick.label == selectedYear) {
+                  return {
+                    size: 14,
+                    weight: 'bold'
+                  };
+                } else {
+                  return {
+                    size: 12,
+                    weight: 'normal'
+                  };
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    function updateInfo(year) {
+      selectedYear = year;
+      const index = labels.indexOf(year);
+      document.getElementById('selectedYear').textContent = year;
+
+      let bg = '#ffffff';
+      if (year <= 2010) {
+        bg = '#e0f7fa';
+      } else if (year <= 2020) {
+        bg = '#fff3e0';
+      } else {
+        bg = '#f3e5f5';
+      }
+      document.body.style.backgroundColor = bg;
+
+      const rateBox = document.getElementById('rateBox');
+      let html = `<h4>${year}年の債務残高（対GDP比）</h4><ul>`;
+      for (const country in dataset) {
+        html += `<li><strong>${country}</strong>：${dataset[country][index]}％`;
+        if (year === 2024 && comments2024[country]) {
+          html += `<br><small style="color:#555;">💬 ${comments2024[country]}</small>`;
+        }
+        html += `</li>`;
+      }
+      html += `</ul>`;
+      rateBox.innerHTML = html;
+
+      const noteBox = document.getElementById('noteBox');
+      let note = '';
+      if (year <= 2010) {
+        note = 'このころはリーマンショックの影響で、世界の国々の借金が増えた時期だよ。';
+      } else if (year <= 2020) {
+        note = '各国の債務は少しずつ増えてきているね。日本はすでにとても高い水準だよ。';
+      } else {
+        note = 'コロナ対策で借金が増えた国も多いよ。日本は特に高いけど、他の国も増えているね。';
+      }
+      noteBox.innerHTML = `<h4>注釈</h4><p>${note}</p>`;
+
+      rateBox.classList.remove("visible");
+      noteBox.classList.remove("visible");
+      void rateBox.offsetWidth;
+      void noteBox.offsetWidth;
+      rateBox.classList.add("visible");
+      noteBox.classList.add("visible");
+
+      chart.update(); // 🔥 ラベル再描画
+    }
+
+    document.getElementById('yearSlider').addEventListener('input', (e) => {
+      const year = parseInt(e.target.value);
+      updateInfo(year);
+    });
+
+    updateInfo(2024);
+  </script>
+
+  <button class="back-button" onclick="history.back()">BACK</button>
+</body>
+</html>

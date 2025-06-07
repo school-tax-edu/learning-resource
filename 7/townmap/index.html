@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>税金が使われている場所を探そう！</title>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
+    }
+    body {
+      text-align: center;
+      font-family: "Arial", sans-serif;
+      background-color: #f0f8ff;
+      animation: fadeIn 1s ease-in;
+    }
+    .container {
+      position: relative;
+      display: inline-block;
+      animation: fadeIn 1.5s ease-in;
+    }
+    .map {
+      width: 80%;
+      height: auto;
+    }
+    .label {
+      position: absolute;
+      background-color: red;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+    }
+    .popup {
+      position: absolute;
+      background: #fff;
+      border: 3px solid #333;
+      padding: 14px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: none;
+      min-width: 240px;
+      font-size: 16px;
+      line-height: 1.6;
+      text-align: left;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease-in;
+    }
+    .popup.show {
+      display: block;
+      animation: fadeIn 0.5s ease-in forwards;
+      pointer-events: auto;
+    }
+    .popup.hide {
+      animation: fadeOut 0.5s ease-in forwards;
+    }
+    .popup span {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 14px 28px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: background-color 0.3s;
+    }
+    .back-button:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="window.history.back()">BACK</button>
+  <h1>税金が使われている場所を探そう！</h1>
+  <p>街の中にある税金が使われている場所をクリックしてみよう！</p>
+  <div class="container">
+    <img src="p0102_02.jpg" alt="街のイラスト" class="map">
+    <div class="label" style="top: 75%; left: 77%;" onclick="showPopup(event, 'ここは小学校！<br>子どもたちが学ぶために<br>税金が使われています。')">小学校</div>
+    <div class="label" style="top: 51%; left: 47%;" onclick="showPopup(event, 'ここは中学校！<br>未来を担う子どもたちのために<br>税金が使われています。')">中学校</div>
+    <div class="label" style="top: 45%; left: 33%;" onclick="showPopup(event, 'ここは公立病院！<br>みんなの健康を守るために<br>税金が使われています。')">公立病院</div>
+    <div class="label" style="top: 56%; left: 55%;" onclick="showPopup(event, 'ここは警察署！<br>街の安全を守るために<br>税金が使われています。')">警察署</div>
+    <div class="label" style="top: 37%; left: 46%;" onclick="showPopup(event, 'ここは消防署！<br>火事や災害から守るために<br>税金が使われています。')">消防署</div>
+    <div class="label" style="top: 81%; left: 34%;" onclick="showPopup(event, 'ここは公園！<br>みんなが遊べるように<br>税金が使われています。')">公園</div>
+    <div class="label" style="top: 61%; left: 39%;" onclick="showPopup(event, 'ここは道路工事！<br>安全な道を作るために<br>税金が使われています。')">道路工事</div>
+    <div class="label" style="top: 60%; left: 24%;" onclick="showPopup(event, 'ここは橋！<br>人や車が渡れるように<br>税金が使われています。')">橋</div>
+    <div class="label" style="top: 36%; left: 85%;" onclick="showPopup(event, 'ここは港！<br>物の輸送を支えるために<br>税金が使われています。')">港</div>
+    <div class="label" style="top: 87%; left: 55%;" onclick="showPopup(event, 'ここは文化ホール！<br>イベントやコンサートに<br>税金が使われています。')">文化ホール</div>
+    <div class="label" style="top: 52%; left: 73%;" onclick="showPopup(event, 'ここは公民館！<br>地域の住民が集まる場所に<br>税金が使われています。')">公民館</div>
+    <div class="label" style="top: 59%; left: 65%;" onclick="showPopup(event, 'ここは市役所・町役場！<br>みんなの生活を支えるために<br>税金が使われています。')">市役所・町役場</div>
+    <div class="label" style="top: 32%; left: 65%;" onclick="showPopup(event, 'ここは灯台！<br>海の安全のために<br>税金が使われています。')">灯台</div>
+    <div class="label" style="top: 26%; left: 33%;" onclick="showPopup(event, 'ここはゴミ処理施設！<br>ゴミ処理・衛生のために<br>税金が使われています。')">ゴミ処理施設</div>
+    <div class="label" style="top: 42%; left: 22%;" onclick="showPopup(event, 'ここは保険福祉センター！<br>医療保険や福祉のために<br>税金が使われています。')">保険福祉センター</div>
+    <div class="label" style="top: 35%; left: 22%;" onclick="showPopup(event, 'ここは自衛隊！<br>災害にあった人達を助けるために<br>税金が使われています。')">自衛隊</div>
+    <div class="label" style="top: 51%; left: 17%;" onclick="showPopup(event, 'ここは図書館！<br>本の貸し出しのために<br>税金が使われています。')">図書館</div>
+    <div class="label" style="top: 81%; left: 59%;" onclick="showPopup(event, 'ここは横断歩道！<br>歩行者が安全に道路を渡るために<br>税金が使われています。')">横断歩道</div>
+    <div class="label" style="top: 88%; left: 73%;" onclick="showPopup(event, 'これはゴミ収集車！<br>町をきれいにするために<br>税金が使われています。')">ゴミ収集車</div>
+    <div class="label" style="top: 57%; left: 78%;" onclick="showPopup(event, 'これはコミュニティバス！<br>町の移動手段を確保するために<br>税金が使われています。')">コミュニティバス</div>
+    <div class="label" style="top: 73%; left: 53%;" onclick="showPopup(event, 'これは信号機！<br>車が安全に道路を走行するために<br>税金が使われています。')">信号機</div>
+    <div class="label" style="top: 38%; left: 64%;" onclick="showPopup(event, 'これは港湾工事！<br>船のために港を整備するのに<br>税金が使われています。')">港湾工事</div>
+    <div class="label" style="top: 85%; left: 45%;" onclick="showPopup(event, 'これは下水道工事！<br>清潔に生活するために<br>税金が使われています。')">下水道工事</div>
+    <div class="label" style="top: 24%; left: 18%;" onclick="showPopup(event, 'これは災害復旧！<br>災害にあった地域を<br>もとに戻すために税金が使われています。')">災害復旧</div>
+    <div class="label" style="top: 78%; left: 18%;" onclick="showPopup(event, 'これは河川工事！<br>川が災害にあわないように<br>税金が使われています。')">河川工事</div>
+    <div class="label" style="top: 62%; left: 17%;" onclick="showPopup(event, 'これはガードレール！<br>車の安全な走行のために<br>税金が使われています。')">ガードレール</div>
+    <div class="label" style="top: 66%; left: 13%;" onclick="showPopup(event, 'これは本屋！<br>税金は使われていません。')">本屋</div>
+    <div class="label" style="top: 31%; left: 73%;" onclick="showPopup(event, 'これはクルーズ船！<br>税金は使われていません。')">クルーズ船</div>
+    <div class="label" style="top: 86%; left: 67%;" onclick="showPopup(event, 'これは歩道橋！<br>歩行者の安全のために<br>税金が使われています。')">歩道橋</div>
+    <div class="label" style="top: 62%; left: 46%;" onclick="showPopup(event, 'これはホテル！<br>税金は使われていません。')">ホテル</div>
+    </div>
+  <div id="popup" class="popup">
+    <span id="closeBtn">✖️</span>
+    <div id="popupText"></div>
+  </div>
+  <script>
+    function showPopup(event, text) {
+      const popup = document.getElementById("popup");
+      const popupText = document.getElementById("popupText");
+      popupText.innerHTML = text;
+      popup.style.top = event.clientY + "px";
+      popup.style.left = event.clientX + "px";
+      popup.style.display = "block";
+      popup.classList.remove("hide");
+      void popup.offsetWidth;
+      popup.classList.add("show");
+    }
+    document.getElementById("closeBtn").addEventListener("click", function () {
+      const popup = document.getElementById("popup");
+      popup.classList.remove("show");
+      popup.classList.add("hide");
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 500);
+    });
+  </script>
+</body>
+</html>

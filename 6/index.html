@@ -3,83 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>インタラクティブ租税教育教材 - 5ページ目</title>
+    <title>公立学校の児童・生徒一人当たりの公費負担額（令和2年度）</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fffae6;
             margin: 0;
-            overflow: hidden;
+            padding: 0;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #fffae6;
         }
-
-        h3 {
-            margin-bottom: 20px;
-            font-size: 28px;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
+        .container {
+            width: 95vw;
+            height: auto;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-
+        .illustrations {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .illustration-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            margin: 10px;
+        }
         img {
-            max-width: 90vw;
-            max-height: 80vh;
-            object-fit: contain;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
+            width: 220px;
+            height: 220px;
+        }
+        .label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .amounts {
+            font-size: 16px;
+            font-weight: bold;
         }
 
         /* HOMEボタンのスタイル */
         .home-button {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 24px;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
             background-color: red;
             color: white;
             border: none;
             border-radius: 20px;
-            font-size: 20px;
+            font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
             transition: background-color 0.3s;
         }
-
         .home-button:hover {
             background-color: #cc0000;
         }
 
         /* アニメーション */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
         }
     </style>
 </head>
 <body>
-    <h3>税金の流れと納め方</h3>
-    <img src="page5_image.png" alt="5ページ目のスライド">
+    <div class="container fadeIn">
+        <h2 class="fadeIn">公立学校の児童・生徒一人当たりの公費負担額（令和4年度）</h2>
+        <p class="fadeInUp-delayed">普段通っている学校で使う用品や施設のほか、教科書の無償配付などにも、税金が使われています。<br>
+        皆さんのためにどのぐらい使われているか、確認してみましょう。</p>
+
+        <div class="illustrations fadeInUp-delayed">
+            <div class="illustration-row">
+                <img src="elementary.png" alt="小学生">
+                <p class="label">小学生</p>
+                <p class="amounts">約94万円</p>
+            </div>
+            <div class="illustration-row">
+                <img src="junior_high.png" alt="中学生">
+                <p class="label">中学生</p>
+                <p class="amounts">約109万円</p>
+            </div>
+            <div class="illustration-row">
+                <img src="high_school.png" alt="高校生">
+                <p class="label">高校生</p>
+                <p class="amounts">約113万円</p>
+            </div>
+        </div>
+    </div>
 
     <!-- HOMEボタン -->
     <button class="home-button" onclick="location.href='../main.html'">HOME</button>

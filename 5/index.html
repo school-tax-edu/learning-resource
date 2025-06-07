@@ -1,296 +1,87 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>各国の税収（GDP比）＋国旗＋ソート＋リセット</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-  <style>
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブ租税教育教材 - 5ページ目</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fffae6;
+        }
 
-    @keyframes zoomIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
-    }
+        h3 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
 
-    body {
-      font-family: sans-serif;
-      margin: 2rem;
-      background:#fffae6;
-    );
-      animation: fadeIn 1s ease-in;
-    }
+        img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
 
-    h2 {
-      margin-bottom: 1rem;
-    }
+        /* HOMEボタンのスタイル */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
 
-    .controls {
-      margin-bottom: 1rem;
-    }
+        .home-button:hover {
+            background-color: #cc0000;
+        }
 
-    .controls button {
-      margin-right: 1rem;
-      padding: 0.4rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+        /* アニメーション */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .info-popup {
-      display: none;
-      position: absolute;
-      top: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 300px;
-      background: #eef;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      z-index: 1000;
-      animation: zoomIn 0.4s ease-out;
-    }
-
-    .info-popup button {
-      display: block;
-      margin-top: 1rem;
-      background: #ccc;
-      border: none;
-      padding: 0.5rem;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    canvas {
-      max-width: 100%;
-      height: 250px;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .home-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      z-index: 999;
-      transition: background-color 0.3s;
-    }
-
-    .home-button:hover {
-      background-color: #cc0000;
-    }
-  </style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
+    <h3>税金の流れと納め方</h3>
+    <img src="page5_image.png" alt="5ページ目のスライド">
 
-  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
-
-  <h2 class="fade-in">世界の消費税（付加価値税）の標準税率 （2024年1月現在）</h2>
-<p style="font-size: 0.9em; color: gray;">
-  ※データ出所：財務省HP「消費税など（消費課税）に関する資料」を基に作成
-</p>
-
-  <div class="controls fade-in">
-    <button onclick="toggleInfo()">💬 解説</button>
-  </div>
-
-  <canvas id="taxChart" class="fade-in"></canvas>
-
-  <div class="info-popup" id="infoPopup">
-    <h4>（注釈）このグラフは、消費税（付加価値税）の税率を示しています</h4>
-    <p>平均税率は<span style="color: red; font-weight: bold;">17.7%</span> です。</p>
-    <p>【豆知識】消費税は私たちの老後と地域を支えています。<br>日本における消費税・地方消費税は、私たちが老後も安心して生活できるよう年金や医療などのために使われています。</p>
-    <button onclick="toggleInfo()">閉じる</button>
-  </div>
-
-  <script>
-    const rawCountries = [
-      { name: "ハンガリー", flag: "🇭🇺", value: 27 },
-      { name: "デンマーク", flag: "🇩🇰", value: 25 },
-      { name: "ノルウェー", flag: "🇳🇴", value: 25 },
-      { name: "スウェーデン", flag: "🇸🇪", value: 25 },
-      { name: "クロアチア", flag: "🇭🇷", value: 25 },
-      { name: "フィンランド", flag: "🇫🇮", value: 24 },
-      { name: "ギリシャ", flag: "🇬🇷", value: 24 },
-      { name: "ポルトガル", flag: "🇵🇹", value: 23 },
-      { name: "アイスランド", flag: "🇮🇸", value: 23 },
-      { name: "ポーランド", flag: "🇵🇱", value: 22 },
-      { name: "スロベニア", flag: "🇸🇮", value: 22 },
-      { name: "イタリア", flag: "🇮🇹", value: 22 },
-      { name: "エストニア", flag: "🇪🇪", value: 21 },
-      { name: "スペイン", flag: "🇪🇸", value: 21 },
-      { name: "チェコ", flag: "🇨🇿", value: 21 },
-      { name: "ラトビア", flag: "🇱🇻", value: 21 },
-      { name: "オランダ", flag: "🇳🇱", value: 21 },
-      { name: "ベルギー", flag: "🇧🇪", value: 21 },
-      { name: "オーストリア", flag: "🇦🇹", value: 20 },
-      { name: "フランス", flag: "🇫🇷", value: 20 },
-      { name: "スロバキア", flag: "🇸🇰", value: 20 },
-      { name: "ブルガリア", flag: "🇧🇬", value: 20 },
-      { name: "トルコ", flag: "🇹🇷", value: 20 },
-      { name: "イギリス", flag: "🇬🇧", value: 20 },
-      { name: "チリ", flag: "🇨🇱", value: 19 },
-      { name: "ドイツ", flag: "🇩🇪", value: 19 },
-      { name: "ルーマニア", flag: "🇷🇴", value: 19 },
-      { name: "ルクセンブルク", flag: "🇱🇺", value: 17 },
-      { name: "中国", flag: "🇨🇳", value: 16 },
-      { name: "ニュージーランド", flag: "🇳🇿", value: 15 },
-      { name: "メキシコ", flag: "🇲🇽", value: 15 },
-      { name: "イスラエル", flag: "🇮🇱", value: 13 },
-      { name: "マルタ", flag: "🇲🇹", value: 13 },
-      { name: "カナダ", flag: "🇨🇦", value: 13 },
-      { name: "フィリピン", flag: "🇵🇭", value: 12 },
-      { name: "インドネシア", flag: "🇮🇩", value: 11 },
-      { name: "日本", flag: "🇯🇵", value: 10 },
-      { name: "オーストラリア", flag: "🇦🇺", value: 10 },
-      { name: "韓国", flag: "🇰🇷", value: 10 },
-      { name: "カンボジア", flag: "🇰🇭", value: 10 },
-      { name: "シンガポール", flag: "🇸🇬", value: 8 },
-      { name: "スイス", flag: "🇨🇭", value: 7.7 },
-      { name: "ベトナム", flag: "🇻🇳", value: 7 },
-      { name: "ラオス", flag: "🇱🇦", value: 7 },
-      { name: "タイ", flag: "🇹🇭", value: 7 },
-      { name: "台湾", flag: "🇹🇼", value: 5 }
-    ];
-
-    let countries = [...rawCountries];
-
-    function getChartData() {
-      const labels = countries.map(c => `${c.flag} ${c.name}`);
-      const data = countries.map(c => c.value);
-      const backgroundColors = countries.map(c =>
-        c.name === "日本" ? 'rgba(255, 182, 193, 0.9)' : 'rgba(100, 149, 237, 0.3)'
-      );
-      const borderColors = countries.map(c =>
-        c.name === "日本" ? 'black' : 'rgba(100, 149, 237, 1)'
-      );
-      const borderWidths = countries.map(c =>
-        c.name === "日本" ? 2 : 1
-      );
-      return { labels, data, backgroundColors, borderColors, borderWidths };
-    }
-
-    const ctx = document.getElementById("taxChart").getContext("2d");
-    const chart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: [],
-        datasets: [{
-          label: "税収（GDP比％）",
-          data: [],
-          backgroundColor: [],
-          borderColor: [],
-          borderWidth: []
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        animation: {
-          duration: 1000,
-          easing: 'easeOutQuart'
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: ctx => `${ctx.parsed.y}%`
-            }
-          },
-          datalabels: {
-            display: ctx => countries[ctx.dataIndex].name === "日本",
-            formatter: val => `${val}%`,
-            anchor: 'end',
-            align: 'top',
-            color: '#000',
-            font: {
-              weight: 'bold',
-              size: 12
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 30,
-            title: {
-              display: true,
-              text: "(%)"
-            }
-          },
-          x: {
-            ticks: {
-              maxRotation: 90,
-              minRotation: 45,
-              font: {
-                size: 12
-              }
-            }
-          }
-        }
-      },
-      plugins: [ChartDataLabels]
-    });
-
-    function updateChart() {
-      const chartData = getChartData();
-      chart.data.labels = chartData.labels;
-      chart.data.datasets[0].data = chartData.data;
-      chart.data.datasets[0].backgroundColor = chartData.backgroundColors;
-      chart.data.datasets[0].borderColor = chartData.borderColors;
-      chart.data.datasets[0].borderWidth = chartData.borderWidths;
-      chart.update();
-    }
-
-    function sortChart() {
-      countries.sort((a, b) => b.value - a.value);
-      updateChart();
-    }
-
-    function resetChart() {
-      countries = [...rawCountries];
-      updateChart();
-    }
-
-    function toggleInfo() {
-      const popup = document.getElementById("infoPopup");
-      popup.style.display = popup.style.display === "block" ? "none" : "block";
-    }
-
-    updateChart();
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const faders = document.querySelectorAll(".fade-in");
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      }, { threshold: 0.1 });
-
-      faders.forEach(el => observer.observe(el));
-    });
-  </script>
+    <!-- HOMEボタン -->
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
 </body>
 </html>
