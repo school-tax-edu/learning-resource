@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石川県市町村財政比較</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            padding: 10px;
+            max-width: 1000px;
+            margin: auto;
+        }
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        canvas {
+    max-width: 100%; /* グラフのサイズを縮小 */
+    height: auto;
+}
+        .description {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+        h1 {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        h4 {
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .legend-box {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            margin-right: 5px;
+        }
+        .back-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 14px 28px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+.back-button:hover {
+    background-color: #cc0000;
+}
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.history.back()">BACK</button>
+    <h1>石川県の市町の財政状況を比べてみよう！《令和６年度当初予算》</h1>
+
+    <div style="text-align: center; margin-bottom: 10px;">
+        <label for="municipality1">あなたの住む市町村:</label>
+<select id="municipality1" onchange="updateChart()"></select>
+<span id="population1">人口: - 人</span>
+
+<label for="municipality2">〜比べたい市町村:</label>
+<select id="municipality2" onchange="updateChart()"></select>
+<span id="population2">人口: - 人</span>
+
+    </div>
+
+    <div class="container">
+        <div class="chart-container">
+            <h4 id="municipality1-name"></h4>
+            <canvas id="incomeChart1"></canvas>
+            <h4 id="municipality1-name-expenses"></h4>
+            <canvas id="expensesChart1"></canvas>
+        </div>
+        <div class="chart-container">
+            <h4 id="municipality2-name"></h4>
+            <canvas id="incomeChart2"></canvas>
+            <h4 id="municipality2-name-expenses"></h4>
+            <canvas id="expensesChart2"></canvas>
+        </div>
+     <div class="description">
+            <h3>項目の説明</h3>
+            <h4>《歳入》</h4>
+<p><span class="legend-box" style="background-color: #FF6F00;"></span><b>市町村税</b> - 地方自治体の財源となる税金</p>
+<p><span class="legend-box" style="background-color: #FFB300;"></span><b>地方交付税</b> - 国から地方自治体へ配分される財源</p>
+<p><span class="legend-box" style="background-color: #FFEB3B;"></span><b>国庫支出金</b> - 国が特定の事業に対して補助する資金</p>
+<p><span class="legend-box" style="background-color: #8BC34A;"></span><b>県支出金</b> - 県が提供する財政支援</p>
+<p><span class="legend-box" style="background-color: #4CAF50;"></span><b>市町村債</b> - 市町村が発行する借入金</p>
+<p><span class="legend-box" style="background-color: #1976D2;"></span><b>その他</b> - その他の収入源</p>
+<h4>《歳出》</h4>
+<p><span class="legend-box" style="background-color: #FF6F00;"></span><b>民生費</b> - 社会福祉や医療支援などに使われる費用</p>
+<p><span class="legend-box" style="background-color: #FFB300;"></span><b>土木費</b> - 道路やインフラ整備に使われる費用</p>
+<p><span class="legend-box" style="background-color: #FFEB3B;"></span><b>教育費</b> - 学校や教育機関の運営に使われる費用</p>
+<p><span class="legend-box" style="background-color: #8BC34A;"></span><b>衛生費</b> - 公衆衛生や病院整備にかかる費用</p>
+<p><span class="legend-box" style="background-color: #4CAF50;"></span><b>農林水産費</b> - 農業や林業、水産業への支援</p>
+<p><span class="legend-box" style="background-color: #1976D2;"></span><b>公債費</b> - 借入金の返済</p>
+<p><span class="legend-box" style="background-color: #D81B60;"></span><b>その他</b> - その他の支出</p>
+        </div>
+    </div>
+
+    <script>
+        let incomeChart1, expensesChart1, incomeChart2, expensesChart2;
+        
+        const data = {
+    '金沢市': {
+        'population': 454000,  // 人口データ追加
+        'income': [845, 129, 373, 143, 88, 326],
+        'expenses': [796, 198, 263, 181, 29, 173, 264]
+    },
+    '七尾市': {
+        'population': 45000,  // 人口データ追加
+        'income': [77, 93, 94, 45, 64, 71],
+        'expenses': [138, 18, 23, 117, 16, 39, 93]
+    },
+　　'小松市': {
+        'population': 103000,  // 人口データ追加
+        'income': [165, 83, 94, 39, 45, 91],
+        'expenses': [194, 62, 82, 29, 11, 54, 85]
+    },
+　　'輪島市': {
+        'population': 19000,  // 人口データ追加
+        'income': [22, 93, 17, 10, 15, 29],
+        'expenses': [48, 14, 16, 28, 6, 32, 42]
+    },
+　　'珠洲市': {
+        'population': 10000,  // 人口データ追加
+        'income': [13, 66, 88, 29, 83, 19],
+        'expenses': [51, 7, 8, 181, 3, 15, 33]
+    },
+　　'加賀市': {
+        'population': 59000,  // 人口データ追加
+        'income': [88, 83, 57, 22, 31, 62],
+        'expenses': [120, 50, 34, 33, 4, 38, 64]
+    },
+　　'羽咋市': {
+        'population': 18000,  // 人口データ追加
+        'income': [26, 42, 17, 10, 16, 20],
+        'expenses': [31, 16, 12, 24, 6, 11, 31]
+    },
+　　'白山市': {
+        'population': 109000,  // 人口データ追加
+        'income': [177, 121, 73, 43, 37, 80],
+        'expenses': [168, 56, 54, 61, 13, 80, 99]
+    },
+　　'かほく市': {
+        'population': 35000,  // 人口データ追加
+        'income': [42, 60, 35, 11, 15, 36],
+        'expenses': [64, 11, 22, 9, 2, 27, 64]
+    },
+　　'能美市': {
+        'population': 48000,  // 人口データ追加
+        'income': [86, 51, 33, 14, 36, 56],
+        'expenses': [100, 23, 34, 19, 5, 48, 47]
+    },
+　　'野々市市': {
+        'population': 58000,  // 人口データ追加
+        'income': [83, 28, 43, 16, 28, 38],
+        'expenses': [109, 18, 42, 14, 1, 18, 34]
+    },
+　　'川北町': {
+        'population': 5000,  // 人口データ追加
+        'income': [12, 10, 7, 2, 11, 10],
+        'expenses': [10, 17, 4, 6, 2, 5, 8]
+    },
+　　'津幡町': {
+        'population': 36000,  // 人口データ追加
+        'income': [42, 34, 22, 14, 14, 25],
+        'expenses': [52, 16, 19, 11, 6, 15, 32]
+    },
+　　'内灘町': {
+        'population': 25000,  // 人口データ追加
+        'income': [25, 29, 38, 12, 23, 17],
+        'expenses': [44, 8, 12, 21, 1, 14, 44]
+    },
+　　'志賀町': {
+        'population': 16000,  // 人口データ追加
+        'income': [37, 37, 133, 29, 115, 20],
+        'expenses': [53, 13, 10, 197, 6, 12, 80]
+    },
+　　'宝達志水町': {
+        'population': 11000,  // 人口データ追加
+        'income': [17, 33, 7, 4, 16, 17],
+        'expenses': [18, 9, 17, 14, 3, 8, 25]
+    },
+　　'中能登町': {
+        'population': 15000,  // 人口データ追加
+        'income': [17, 44, 11, 7, 4, 20],
+        'expenses': [27, 16, 11, 10, 6, 13, 20]
+    },
+　　'穴水町': {
+        'population': 6000,  // 人口データ追加
+        'income': [8, 32, 12, 8, 11, 12],
+        'expenses': [24, 1, 4, 11, 1, 8, 34]
+    },
+　　'能登町': {
+        'population': 13000,  // 人口データ追加
+        'income': [16, 77, 36, 30, 30, 29],
+        'expenses': [43, 6, 8, 71, 15, 21, 54]
+    }　　
+};
+
+
+        function createChart(ctx, data, labels) {
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#FF6F00', '#FFB300', '#FFEB3B', '#8BC34A', '#4CAF50', '#1976D2', '#D81B60'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }, 
+                        tooltip: { enabled: true },
+                        datalabels: {
+                            color: '#000',  
+                            font: { size: 12, weight: 'bold' }, 
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {
+                                return context.chart.data.labels[context.dataIndex] + "\n" + value.toFixed(2) + ' 億円';
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels, {
+    id: 'centerText',
+    beforeDraw: function(chart) {
+        const width = chart.width;
+        const height = chart.height;
+        const ctx = chart.ctx;
+        ctx.restore();
+        
+        const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+        ctx.font = "bold 16px Arial";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        // 「合計」を上に表示
+        ctx.fillText("合計", centerX, centerY - 5);
+        // 「〇〇 億円」を下に表示
+        ctx.fillText(`${total.toFixed(2)} 億円`, centerX, centerY + 25);
+
+        ctx.save();
+    }
+}]
+            });
+        }
+
+        function updateChart() {
+    const municipality1 = document.getElementById('municipality1').value;
+    const municipality2 = document.getElementById('municipality2').value;
+
+    document.getElementById('municipality1-name').innerText = municipality1 + ' - 歳入';
+    document.getElementById('municipality1-name-expenses').innerText = municipality1 + ' - 歳出';
+    document.getElementById('municipality2-name').innerText = municipality2 + ' - 歳入';
+    document.getElementById('municipality2-name-expenses').innerText = municipality2 + ' - 歳出';
+
+    // 人口情報を更新
+    document.getElementById('population1').innerText = `人口: ${data[municipality1].population.toLocaleString()} 人`;
+    document.getElementById('population2').innerText = `人口: ${data[municipality2].population.toLocaleString()} 人`;
+            
+            if (incomeChart1) incomeChart1.destroy();
+            if (expensesChart1) expensesChart1.destroy();
+            if (incomeChart2) incomeChart2.destroy();
+            if (expensesChart2) expensesChart2.destroy();
+            
+            incomeChart1 = createChart(document.getElementById('incomeChart1').getContext('2d'), data[municipality1].income, ['市町村税', '地方交付税', '国庫支出金', '県支出金', '市町村債', 'その他']);
+            expensesChart1 = createChart(document.getElementById('expensesChart1').getContext('2d'), data[municipality1].expenses, ['民生費', '土木費', '教育費', '衛生費', '農林水産費', '公債費', 'その他']);
+            incomeChart2 = createChart(document.getElementById('incomeChart2').getContext('2d'), data[municipality2].income, ['市町村税', '地方交付税', '国庫支出金', '県支出金', '市町村債', 'その他']);
+            expensesChart2 = createChart(document.getElementById('expensesChart2').getContext('2d'), data[municipality2].expenses, ['民生費', '土木費', '教育費', '衛生費', '農林水産費', '公債費', 'その他']);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const selectElements = document.querySelectorAll('select');
+    Object.keys(data).forEach(municipality => {
+        selectElements.forEach(select => {
+            let option = document.createElement('option');
+            option.value = municipality;
+            option.textContent = municipality;
+            select.appendChild(option);
+        });
+    });
+
+    // 初期表示時に人口情報を更新
+    updateChart();
+});
+
+    </script>
+</body>
+</html>
