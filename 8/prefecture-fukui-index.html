@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>国の歳入・歳出グラフ</title>
+  <title>県の歳入・歳出グラフ</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <style>
@@ -16,19 +16,6 @@
     }
     h1, h2 {
       margin: 30px 10px 10px;
-    }
-    .nav {
-      margin: 20px;
-    }
-    .nav a {
-      text-decoration: none;
-      font-size: 18px;
-      color: white;
-      background: #007BFF;
-      padding: 10px 20px;
-      border-radius: 5px;
-      margin: 5px;
-      display: inline-block;
     }
     .chart-wrapper {
       display: flex;
@@ -44,6 +31,19 @@
       height: auto !important;
       max-width: 600px;
       max-height: 600px;
+    }
+    .nav {
+      margin: 20px;
+    }
+    .nav a {
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      background: #007BFF;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin: 5px;
+      display: inline-block;
     }
     .fade-in {
       opacity: 0;
@@ -95,26 +95,26 @@
   </style>
 </head>
 <body>
-  <h1 class="fade-in">国の歳入・歳出をみてみよう！</h1>
+  <h1 class="fade-in">県の歳入・歳出をみてみよう！</h1>
   <div class="nav fade-in">
-    <a href="prefecture-fukui-index.html">福井県の予算を見る</a>
+    <a href="index.html">国の予算を見る</a>
     <a href="comparison chart/fukui.html">市町村の予算を見る</a>
   </div>
   <div class="chart-wrapper fade-in">
     <div>
-      <h2>国の歳入（令和７年度）</h2>
+      <h2>県の歳入（福井県 令和７年度）</h2>
       <canvas id="kenRevenue"></canvas>
     </div>
     <div>
-      <h2>国の歳出（令和７年度）</h2>
+      <h2>県の歳出（福井県 令和７年度）</h2>
       <canvas id="kenExpenditure"></canvas>
     </div>
   </div>
   <div class="info-box fade-in">
     <h2>グラフの見方</h2>
-    <p><strong>歳入：</strong>「消費税」「所得税」「法人税」などの税収のほか、「公債金収入」（国債など借入金）、その他の収入を含みます。</p>
-    <p><strong>歳出：</strong>「社会保障関係費」や「防衛関係費」などの支出に加え、「国債費」（過去の借金の返済）、「地方交付税交付金等」などを含みます。</p>
-    <p>中央の金額表示はグラフ全体の合計額を示しています。</p>
+    <p><strong>歳入：</strong>「県税」「地方交付税」「国庫支出金」などの収入のほか、「県債」（県が発行する借金）や「その他の収入」を含みます。</p>
+    <p><strong>歳出：</strong>「教育費」「土木費」「民生費」などの各分野への支出のほか、「公債費」（過去に借りたお金の返済）、「その他の経費」を含みます。</p>
+    <p>中央に表示されている金額は、歳入・歳出それぞれの合計額です。</p>
   </div>
   <button class="home-button fade-in" onclick="location.href='../main.html'">HOME</button>
   <script>
@@ -178,16 +178,16 @@
     }
 
     createDonutChart("kenRevenue",
-      ["消費税", "所得税", "法人税", "その他の税", "公債金収入", "その他"],
-      [249080, 226660, 192450, 110000, 286471, 87317],
-      ["#42a5f5", "#ef5350", "#66bb6a", "#ab47bc", "#bdbdbd", "#cfd8dc"],
-      "国の歳入の内訳（総額 115兆1,978億円）");
+      ["地方交付税", "県税", "国庫支出金", "県債", "その他"],
+      [1302, 1442, 635, 479, 1159],
+      ["#42a5f5", "#ef5350", "#66bb6a", "#ab47bc", "#bdbdbd"],
+      "県の歳入の内訳（総額 5,017億円）");
 
     createDonutChart("kenExpenditure",
-      ["社会保障関係費", "公共事業関係費", "文教及び科学振興費", "防衛関係費", "その他", "地方交付税交付金等", "国債費"],
-      [382938, 60858, 56560, 86691, 94024, 188728, 282179],
-      ["#ffee58", "#90caf9", "#a5d6a7", "#f48fb1",  "#ffab91", "#ce93d8", "#81d4fa"],
-      "国の歳出の内訳（総額 115兆1,978億円）");
+      ["教育費", "総務費", "土木費", "民生費", "農林水産費", "商工費", "警察費", "衛生費", "公債費", "その他"],
+      [1017, 453, 522, 506, 283, 417, 251, 270, 658, 640],
+      ["#ffee58", "#90caf9", "#a5d6a7", "#f48fb1", "#ffcc80", "#ffab91", "#ce93d8", "#81d4fa", "#bcaaa4", "#cfd8dc"],
+      "県の歳出の内訳（総額 5,017億円）");
 
     document.addEventListener("DOMContentLoaded", () => {
       const fadeElements = document.querySelectorAll('.fade-in');

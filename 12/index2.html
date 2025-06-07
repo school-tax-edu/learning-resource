@@ -77,9 +77,9 @@
         }
         .home-button {
             position: fixed;
-            Top: 20px;
+            bottom: 20px;
             right: 20px;
-            padding: 12px 24px;
+            padding: 18px 36px;
             background-color: red;
             color: white;
             border: none;
@@ -121,8 +121,8 @@
         </div>
         <div style="margin-top: 30px;">
             <button onclick="location.href='notax-escapegame.html'" style="
-                background-color: #1E90FF;
-                color: white;
+                background-color: #00FF00;
+                color: #ffffff;
                 padding: 15px 30px;
                 font-size: 1.5em;
                 border: none;
@@ -141,21 +141,20 @@
     </div>
     <script>
         const quizData = [
-            { question: "税金がなくなるとどうなる？", options: ["お金持ちだけが住める", "すべて無料になる", "道路がこわれたままになる", "UFOが来るようになる"], correct: "道路がこわれたままになる" },
-            { question: "税金がなくなったら警察は？", options: ["AIロボットが担当", "スーパーヒーローが助けてくれる", "くじ引きで選ばれる", "いなくなる"], correct: "いなくなる" },
-            { question: "消防士がいなくなったらどうなる？", options: ["龍が火を吹いて消す", "火が自然に消える", "火事が消せなくなる", "雨が降るまで待つ"], correct: "火事が消せなくなる" },
-            { question: "ゴミ収集がなくなると？", options: ["ロボットが処理する", "ゴミが勝手に消える", "カラスが片付ける", "町がゴミだらけになる"], correct: "町がゴミだらけになる" },
+            { question: "税金がなくなるとどうなる？", options: ["道路がこわれたままになる", "すべて無料になる", "お金持ちだけが住める", "UFOが来るようになる"], correct: "道路がこわれたままになる" },
+            { question: "税金がなくなったら警察は？", options: ["いなくなる", "スーパーヒーローが助けてくれる", "くじ引きで選ばれる", "AIロボットが担当"], correct: "いなくなる" },
+            { question: "消防士がいなくなったらどうなる？", options: ["火事が消せなくなる", "火が自然に消える", "龍が火を吹いて消す", "雨が降るまで待つ"], correct: "火事が消せなくなる" },
+            { question: "ゴミ収集がなくなると？", options: ["町がゴミだらけになる", "ゴミが勝手に消える", "カラスが片付ける", "ロボットが処理する"], correct: "町がゴミだらけになる" },
             { question: "学校がなくなると？", options: ["教育を受けられなくなる", "勉強しなくても頭がよくなる", "宇宙人が教えてくれる", "YouTubeで学べば問題ない"], correct: "教育を受けられなくなる" },
-            { question: "病院がなくなったら？", options: ["家で寝てれば全部治る", "魔法で治せる", "動物が治してくれる", "病気が治らなくなる"], correct: "病気が治らなくなる" },
-            { question: "水道が止まったら？", options: ["コーラが水の代わりになる", "雨水で十分", "井戸が増える", "水が使えなくなる"], correct: "水が使えなくなる" },
-            { question: "図書館がなくなると？", options: ["読書の必要がなくなる", "すべての本が電子化される", "本を借りられなくなる", "動物たちが代わりに本を読んでくれる"], correct: "本を借りられなくなる" },
-            { question: "公園がなくなると？", options: ["バーチャル公園ができる", "家の庭が公園になる", "遊ぶ場所がなくなる", "道路が公園になる"], correct: "遊ぶ場所がなくなる" },
-            { question: "税金がなくなると最後にどうなる？", options: ["空からお金が降ってくる", "何も変わらない", "町が崩壊する", "みんなが超能力を得る"], correct: "町が崩壊する" }
+            { question: "病院がなくなったら？", options: ["病気が治らなくなる", "魔法で治せる", "動物が治してくれる", "家で寝てれば全部治る"], correct: "病気が治らなくなる" },
+            { question: "水道が止まったら？", options: ["水が使えなくなる", "雨水で十分", "井戸が増える", "コーラが水の代わりになる"], correct: "水が使えなくなる" },
+            { question: "図書館がなくなると？", options: ["本を借りられなくなる", "すべての本が電子化される", "読書の必要がなくなる", "動物たちが代わりに本を読んでくれる"], correct: "本を借りられなくなる" },
+            { question: "公園がなくなると？", options: ["遊ぶ場所がなくなる", "家の庭が公園になる", "バーチャル公園ができる", "道路が公園になる"], correct: "遊ぶ場所がなくなる" },
+            { question: "税金がなくなると最後にどうなる？", options: ["町が崩壊する", "何も変わらない", "空からお金が降ってくる", "みんなが超能力を得る"], correct: "町が崩壊する" }
         ];
 
         let currentQuestion = 0;
         let score = 0;
-        let firstAttempt = true;
 
         function loadQuestion() {
             if (currentQuestion >= quizData.length) {
@@ -165,7 +164,6 @@
                 return;
             }
 
-            firstAttempt = true;
             const q = quizData[currentQuestion];
             document.getElementById("question").innerText = q.question;
             const optionsContainer = document.getElementById("options");
@@ -185,23 +183,21 @@
         function checkAnswer(answer, btn) {
             const result = document.getElementById("result");
             const options = document.querySelectorAll(".option");
+
             options.forEach(option => option.disabled = true);
 
-            const correctAnswer = quizData[currentQuestion].correct;
-
-            if (firstAttempt && answer === correctAnswer) {
-                score++;
+            if (answer === quizData[currentQuestion].correct) {
                 result.innerText = "正解！";
                 result.style.color = "green";
                 btn.classList.add("correct");
+                score++;
+                document.getElementById("next-button").style.display = "block";
             } else {
-                result.innerText = "残念！";
+                result.innerText = "惜しい！もう一度考えてみよう！";
                 result.style.color = "red";
                 btn.classList.add("wrong");
+                options.forEach(option => option.disabled = false);
             }
-
-            firstAttempt = false;
-            document.getElementById("next-button").style.display = "block";
         }
 
         function nextQuestion() {
@@ -219,6 +215,6 @@
         }
 
         loadQuestion();
-</script>
+    </script>
 </body>
 </html>

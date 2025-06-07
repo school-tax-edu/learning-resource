@@ -1,87 +1,187 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生活と税金の関わりについて考えてみよう</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #fffae6;
-            text-align: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>税金について思っていることを教えて</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #fffae6;
+      padding: 30px;
+      margin: 0;
+      color: #333;
+      animation: fadeIn 0.8s ease-out;
+    }
 
-        h1 {
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
-        }
+    h1 {
+      text-align: center;
+      font-size: 2.4em;
+      margin-bottom: 1.5em;
+    }
 
-        img {
-            max-width: 90vw;
-            max-height: 80vh;
-            object-fit: contain;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
-        }
+    .card {
+      max-width: 960px;
+      margin: 0 auto 40px;
+      background: #ffffff;
+      padding: 36px;
+      border-radius: 16px;
+    }
 
-        /* HOMEボタンのスタイル */
-        .home-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 24px;
-            background-color: red;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: background-color 0.3s;
-        }
-        .home-button:hover {
-            background-color: #cc0000;
-        }
+    .entry {
+      margin-bottom: 30px;
+    }
 
-        /* アニメーション */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .entry label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 1.8em;
+    }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      font-size: 1.8em;
+      padding: 16px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      resize: vertical;
+      background-color: #ffffff;
+      color: #000;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .buttons {
+      text-align: right;
+      margin-top: 30px;
+    }
+
+    .buttons button {
+      padding: 14px 28px;
+      font-size: 1.4em;
+      background: #007c91;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background: #005f6b;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 14px 28px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .home-button:hover {
+      background-color: #cc0000;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media screen and (max-width: 768px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      .card {
+        padding: 20px;
+      }
+      textarea {
+        font-size: 1.2em;
+      }
+      .home-button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>生活に関わる税</h1>
-    <img src="P2image.png" alt="生活に関わる税スライド画像">
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
 
-    <!-- HOMEボタン -->
-    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+  <h1>税金について思っていることを教えて</h1>
+
+  <div class="card" id="opinionCard" style="padding-bottom: 100px;">
+    <div class="entry">
+      <label for="donor">1　知っている税金を書いてみよう</label>
+      <textarea id="donor" placeholder="例：コンビニエンスストアで買い物をすると・・・"></textarea>
+    </div>
+
+    <div class="entry">
+      <label for="receive">2　税金は必要だと思いますか？必要ないと思いますか？その理由も教えて</label>
+      <textarea id="receive" placeholder="理由を自由に書いてみよう"></textarea>
+    </div>
+
+    <div class="buttons">
+      <button onclick="saveAsImage()">意見を画像として保存</button>
+    </div>
+  </div>
+
+  
+  <script>
+    function saveAsImage() {
+      const target = document.getElementById("opinionCard");
+
+      // textarea → divに変換（改行とサイズ保持）
+      const replaceTextarea = (textareaId) => {
+        const textarea = document.getElementById(textareaId);
+        const div = document.createElement("div");
+        div.innerText = textarea.value;
+        div.style.whiteSpace = "pre-wrap";
+        div.style.wordWrap = "break-word";
+        div.style.fontSize = "1.8em";
+        div.style.fontWeight = "600";
+        div.style.padding = "16px";
+        div.style.border = "1px solid #aaa";
+        div.style.borderRadius = "8px";
+        div.style.backgroundColor = "#fff";
+        textarea.style.display = "none";
+        textarea.parentNode.insertBefore(div, textarea);
+        return { textarea, div };
+      };
+
+      const donorSwap = replaceTextarea("donor");
+      const receiveSwap = replaceTextarea("receive");
+
+      html2canvas(target, {
+        scrollY: 0,
+        backgroundColor: "#ffffff",
+        scale: 3,
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "furusato_opinion.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+
+        // 元に戻す
+        donorSwap.div.remove();
+        donorSwap.textarea.style.display = "block";
+        receiveSwap.div.remove();
+        receiveSwap.textarea.style.display = "block";
+      });
+    }
+  </script>
 </body>
+</html>
+
 </html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>税金クイズ</title>
+    <h2 class="title-red-big">クイズにチャレンジ</h2>
+<style>
+        @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #fce4ec;
+    animation: fadeIn 1.2s ease-in;
+}
+
+.quiz-container {
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    border: 4px solid #ff4081;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 1.5s ease-in;
+}
+
+        .question-container {
+            font-size: 36px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .illustration {
+            width: 300px;
+            height: auto;
+            margin: 20px;
+        }
+        .choices {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            width: 50%;
+        }
+        .choice {
+            padding: 15px;
+            width: 80%;
+            font-size: 24px;
+            border: 3px solid #ff80ab;
+            cursor: pointer;
+            background-color: #dcdcdc;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        .choice:hover {
+            background-color: #ff80ab;
+            color: white;
+        }
+        .result {
+            font-size: 40px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .explanation {
+            font-size: 24px;
+            color: #333;
+            margin-top: 15px;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+        .next-button {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 24px;
+            border: none;
+            background-color: #ff4081;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            display: none;
+        }
+        /* 右下HOMEボタン */
+    .home-button {
+        position: fixed;
+        Top: 20px;
+        right: 20px;
+        padding: 14px 28px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        transition: background-color 0.3s;
+    }
+    .home-button:hover {
+        background-color: #cc0000;
+    }
+  .title-red-big {
+    color: red;
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000000;
+    animation: popUp 1s ease-out;
+  }
+
+  @keyframes popUp {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style></head>
+<body>
+    <button class="home-button" onclick="location.href='../../main.html'">HOME</button>
+    
+    <div class="quiz-container">
+        <div class="question-container" id="question">問題文</div>
+        <div class="content-wrapper">
+            <img id="illustration" class="illustration" src="" alt="かわいいイラスト">
+            <div class="choices" id="choices"></div>
+        </div>
+        <div id="result" class="result"></div>
+        <div id="explanation" class="explanation"></div>
+        <button id="next-button" class="next-button" onclick="nextQuestion()">次の問題</button>
+        <div id="score" class="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Q1: 日本で\"税金\"が初めて作られたのはいつの時代でしょうか？", choices: ["弥生時代", "鎌倉時代", "江戸時代"], answer: 0, explanation: "弥生時代にはすでに稲作が広まり、米を納める形での租税制度が始まりました。", img: "cute1.png" },
+            { question: "Q2: 明治時代に実際にあった税金はどれでしょうか？", choices: ["ウサギ税🐇", "キツネ税🦊", "タヌキ税🦝"], answer: 0, explanation: "明治時代には特定の動物に対する税金があり、ウサギ税もその一つでした。", img: "cute2.png" },
+            { question: "Q3: 税金は何歳になったら納めるのでしょうか？", choices: ["１８歳", "２０歳", "年齢関係なし"], answer: 2, explanation: "所得に応じて税金を納めるので、年齢に関係なく課税されることがあります。", img: "cute3.png" },
+            { question: "Q4: 国の税金の使い方は誰が決めるのでしょうか？", choices: ["国会", "財務省", "総理大臣"], answer: 0, explanation: "税金の使い道は国会で決められ、予算案として審議されます。", img: "cute4.png" },
+            { question: "Q5: もらった人に税金がかからないのはどれでしょうか？", choices: ["プロゴルファーの賞金🏆", "クイズ番組の賞金💰", "オリンピックメダルの報奨金💴"], answer: 2, explanation: "オリンピックメダリストへの報奨金は非課税となっています。", img: "cute5.png" },
+            { question: "Q6: 現在、日本で適用されている税金は全部で何種類あるでしょうか？", choices: ["約３０種類", "約５０種類", "約１５０種類"], answer: 1, explanation: "税金の種類は全部で50種類です。", img: "cute6.png" }
+        ];
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("next-button").style.display = "none";
+            document.getElementById("explanation").style.display = "none"; // 初期状態で非表示
+            document.getElementById("question").innerText = questions[currentQuestion].question;
+            document.getElementById("illustration").src = questions[currentQuestion].img;
+            
+            let choicesDiv = document.getElementById("choices");
+            choicesDiv.innerHTML = "";
+            
+            questions[currentQuestion].choices.forEach((choice, index) => {
+                let button = document.createElement("button");
+                button.innerText = choice;
+                button.classList.add("choice");
+                button.onclick = () => checkAnswer(index);
+                choicesDiv.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected) {
+            let resultDiv = document.getElementById("result");
+            let explanationDiv = document.getElementById("explanation");
+            explanationDiv.style.display = "none"; // 初期状態で非表示
+
+            if (selected === questions[currentQuestion].answer) {
+                resultDiv.innerText = "正解です！！";
+                resultDiv.style.color = "green";
+                score++;
+
+                explanationDiv.innerText = questions[currentQuestion].explanation;
+                explanationDiv.style.display = "block"; // 正解時のみ表示
+            } else {
+                resultDiv.innerText = "もうちょっと考えて";
+                resultDiv.style.color = "red";
+            }
+
+            document.getElementById("next-button").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                let message = score === questions.length ? "あなたは税金博士です😄" : `あなたのスコアは${score} / ${questions.length} です🎉`;
+                document.querySelector(".quiz-container").innerHTML = `<h2>クイズ終了！</h2><div class='result'>${message}</div>`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

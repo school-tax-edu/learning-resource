@@ -3,41 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生活と税金の関わりについて考えてみよう</title>
+    <title>どんな税金がかかるかな？</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            overflow: hidden;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             height: 100vh;
             background-color: #fffae6;
+            flex-direction: column;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 80%;
+            max-width: 1000px;
+        }
+        .tax-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
             text-align: center;
+            justify-content: space-between;
         }
-
-        h1 {
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
-        }
-
-        img {
-            max-width: 90vw;
-            max-height: 80vh;
+        .tax-item img {
+            width: 200px;
+            height: 200px;
             object-fit: contain;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
+        }
+        .tax-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+        button {
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #ff6347;
+        }
+        .tax-answer {
+            display: none;
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000000
+        }
+        .quiz-link {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 25px;
+            font-size: 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            text-decoration: none;
+        }
+        .quiz-link:hover {
+            background-color: #0056b3;
         }
 
         /* HOMEボタンのスタイル */
         .home-button {
             position: fixed;
-            top: 20px;
+            Top: 20px;
             right: 20px;
             padding: 12px 24px;
             background-color: red;
@@ -52,36 +96,83 @@
         .home-button:hover {
             background-color: #cc0000;
         }
-
-        /* アニメーション定義 */
+    
+        /* アニメーション */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-    </style>
+
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .fadeInUp {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+</style>
 </head>
 <body>
-    <h1>税の種類</h1>
-    <img src="page3image.png" alt="生活に関わる税スライド画像">
+    <h1 class="fadeIn">どんな税金がかかるかな？</h1>
+
+    <div class="container fadeInUp">
+        <div class="tax-item">
+            <img src="tax1.png" alt="イラスト1">
+            <div class="tax-content">
+                <button onclick="showAnswer('answer1')">税金の名前は・・・</button>
+                <span id="answer1" class="tax-answer">消費税</span>
+            </div>
+        </div>
+
+        <div class="tax-item">
+            <img src="tax2.png" alt="イラスト2">
+            <div class="tax-content">
+                <button onclick="showAnswer('answer2')">税金の名前は・・・</button>
+                <span id="answer2" class="tax-answer">固定資産税</span>
+            </div>
+        </div>
+
+        <div class="tax-item">
+            <img src="tax3.png" alt="イラスト3">
+            <div class="tax-content">
+                <button onclick="showAnswer('answer3')">税金の名前は・・・</button>
+                <span id="answer3" class="tax-answer">所得税</span>
+            </div>
+        </div>
+
+        <div class="tax-item">
+            <img src="tax4.png" alt="イラスト4">
+            <div class="tax-content">
+                <button onclick="showAnswer('answer4')">税金の名前は・・・</button>
+                <span id="answer4" class="tax-answer">自動車税</span>
+            </div>
+        </div>
+    </div>
+
+    <a href="quiz/index.html" class="quiz-link fadeInUp-delayed" class="quiz-link">いろいろなクイズにチャレンジしてみよう！</a>
 
     <!-- HOMEボタン -->
     <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+
+    <script>
+        function showAnswer(id) {
+            var answer = document.getElementById(id);
+            answer.style.display = (answer.style.display === 'none' || answer.style.display === '') ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>

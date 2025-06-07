@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>税金のない世界からの脱出（タイムアタック対応）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+    #game-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px gray;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 22px;
+      margin-top: 10px;
+    }
+    .question {
+      margin: 15px 0 10px;
+      font-size: 18px;
+    }
+    .choice-button, #next-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #eee;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .choice-button:hover {
+      background-color: #ddd;
+    }
+    .info-box {
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+    }
+    .correct {
+      background-color: #d4edda;
+    }
+    .incorrect {
+      background-color: #f8d7da;
+    }
+    #status-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .stage-image {
+      width: 100%;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+    #next-button {
+      background-color: #007bff;
+      color: white;
+      display: none;
+    }
+    @media screen and (max-width: 480px) {
+      h1 {
+        font-size: 20px;
+      }
+      .question {
+        font-size: 16px;
+      }
+      .choice-button, #next-button {
+        font-size: 15px;
+        padding: 10px;
+      }
+    }
+  
+    #back-button {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: red;
+      color: white;
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+  </style>
+</head>
+<body>
+  <button id="back-button" onclick="history.back()">BACK</button>
+  <div id="game-container">
+    <div id="status-bar">
+      <div>スコア: <span id="score">0</span></div>
+      <div>経過時間: <span id="timer">0</span> 秒</div>
+    </div>
+
+    <h1 id="stage-title"></h1>
+    <img id="stage-image" class="stage-image" src="" alt="ステージ画像">
+    <div class="question" id="question-text"></div>
+
+    <div id="choices-container"></div>
+    <button id="next-button" onclick="goToNextStage()">▶ 次のステージへ</button>
+    <div class="info-box" id="result-box"></div>
+  </div>
+
+  <script>
+    const stages = [
+      {
+        title: "ステージ1：火事のビル",
+        image: "no-tax-country2022.jpg",
+        question: "火事が起きているのに消防車が来ません。なぜでしょう？",
+        choices: [
+          { text: "消防士が寝坊した", correct: false },
+          { text: "税金がないため消防サービスが停止している", correct: true },
+          { text: "今日は消防車が休み", correct: false }
+        ]
+      },
+      {
+        title: "ステージ2：荒れた公園",
+        image: "no-tax-country2022.jpg",
+        question: "公園がゴミだらけになっています。どうして？",
+        choices: [
+          { text: "税金がなくなり清掃が止まっている", correct: true },
+          { text: "風が強かったから", correct: false },
+          { text: "犬がゴミを運んだ", correct: false }
+        ]
+      },
+      {
+        title: "ステージ3：閉鎖された病院",
+        image: "no-tax-country2022.jpg",
+        question: "けが人が病院に行っても診てもらえません。なぜ？",
+        choices: [
+          { text: "薬が切れていた", correct: false },
+          { text: "医者が休憩中", correct: false },
+          { text: "公立病院は税金で運営されているから", correct: true }
+        ]
+      },
+      {
+        title: "ステージ4：治安の悪化",
+        image: "no-tax-country2022.jpg",
+        question: "万引きが多発！警察もいません。なぜ？",
+        choices: [
+          { text: "おまわりさんが遠足中", correct: false },
+          { text: "警察も税金で運営されている", correct: true },
+          { text: "今日は非番の日", correct: false }
+        ]
+      },
+      {
+        title: "ステージ5：壊れた橋と道路",
+        image: "no-tax-country2022.jpg",
+        question: "橋が壊れたまま。なぜ修理されない？",
+        choices: [
+          { text: "橋の神様が怒ってる", correct: false },
+          { text: "修理屋さんが不足している", correct: false },
+          { text: "道路整備も税金でまかなわれている", correct: true }
+        ]
+      }
+    ];
+
+    let currentStage = 0;
+    let score = 0;
+    let startTime = Date.now();
+    let timerInterval;
+
+    function renderStage() {
+      const stage = stages[currentStage];
+      document.getElementById("stage-title").innerText = stage.title;
+      document.getElementById("question-text").innerText = stage.question;
+      document.getElementById("stage-image").src = stage.image;
+
+      const choicesContainer = document.getElementById("choices-container");
+      choicesContainer.innerHTML = "";
+      stage.choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.className = "choice-button";
+        btn.innerText = choice.text;
+        btn.onclick = () => checkAnswer(btn, choice.correct);
+        choicesContainer.appendChild(btn);
+      });
+
+      document.getElementById("result-box").innerHTML = "";
+      document.getElementById("next-button").style.display = "none";
+    }
+
+    function checkAnswer(button, correct) {
+      const box = document.getElementById("result-box");
+      if (correct) {
+        score++;
+        document.getElementById("score").innerText = score;
+        box.innerHTML = "正解です！「次のステージへ」ボタンを押してください。";
+        box.className = "info-box correct";
+        document.getElementById("next-button").style.display = "block";
+
+        // 全選択肢ボタンを無効に
+        document.querySelectorAll(".choice-button").forEach(btn => {
+          btn.disabled = true;
+          if (btn !== button) btn.style.opacity = 0.5;
+        });
+      } else {
+        box.innerHTML = "不正解！もう一度考えてみよう。";
+        box.className = "info-box incorrect";
+      }
+    }
+
+    function goToNextStage() {
+      currentStage++;
+      if (currentStage < stages.length) {
+        renderStage();
+      } else {
+        showEnding();
+      }
+    }
+
+    function showEnding() {
+  clearInterval(timerInterval);
+  const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+  const container = document.getElementById("game-container");
+  container.innerHTML = `
+    <h1>🎉 脱出成功！</h1>
+    <p>税金があることで、私たちの生活は守られています。</p>
+    <img src="tax-country2022.jpg" alt="税金のある世界" style="width:100%; margin-top:10px; border-radius:8px;">
+    <div class="info-box">
+      正解数：${score} / ${stages.length}<br>
+      タイム：${elapsedSeconds} 秒
+    </div>
+    <div class="info-box" style="margin-top:10px; background:#e9f5ff;">
+      消防・医療・清掃・警察・インフラ……<br>
+      すべて税金が支えているんだね！
+    </div>
+  `;
+}
+
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById("timer").innerText = elapsed;
+      }, 1000);
+    }
+
+    renderStage();
+    startTimer();
+  </script>
+</body>
+</html>

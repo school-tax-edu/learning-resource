@@ -1,154 +1,84 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>納税の義務と公平な税金</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Arial", sans-serif;
-      background-color: #fffae6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブ租税教育教材 - 13ページ目</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fffae6;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90vw;
+            height: 90vh;
+            flex-direction: column;
+        }
+        img {
+            max-width: 65vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
 
-    h1 {
-      font-size: 3em;
-      color: #0044cc;
-      margin-bottom: 10px;
-      text-align: center;
-    }
+        /* HOMEボタンのスタイル */
+        .home-button {
+            position: fixed;
+            Top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #cc0000;
+        }
+    
+        /* アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    .lead-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    .lead {
-      font-size: 1.6em;
-      font-weight: bold;
-      text-align: center;
-      margin: 0;
-    }
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
 
-    .lead-image {
-      width: 100px;
-      height: auto;
-    }
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
 
-    .card {
-      width: 90%;
-      max-width: 800px;
-      background: white;
-      border-left: 10px solid #005bac;
-      border-radius: 12px;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.6s ease forwards;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card:nth-of-type(1) { animation-delay: 0.2s; }
-    .card:nth-of-type(2) { animation-delay: 0.4s; }
-    .card:nth-of-type(3) { animation-delay: 0.6s; }
-    .card:nth-of-type(4) { animation-delay: 0.8s; }
-    .card:nth-of-type(5) { animation-delay: 1s; }
-
-    .card-title {
-      font-size: 1.4em;
-      color: #005bac;
-      margin-bottom: 5px;
-    }
-
-    .card-text {
-      font-size: 1.2em;
-      line-height: 1.4;
-    }
-
-    .home-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      z-index: 999;
-      transition: background-color 0.3s;
-    }
-
-    .home-button:hover {
-      background-color: #cc0000;
-    }
-
-    @media (max-width: 600px) {
-      .lead-image {
-        width: 70px;
-      }
-      .card-title {
-        font-size: 1.2em;
-      }
-      .card-text {
-        font-size: 1em;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
+    <div class="container">
+        <h1 class="fadeIn" style="font-size: 3em; margin-bottom: 20px;">税金は大切なもの</h1>
+        <img class="fadeInUp-delayed" src="page13_image.png" alt="13ページ目のスライド">
+    </div>
 
-  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
-
-  <h1>税の公平性</h1>
-
-  <div class="lead-container">
-    <p class="lead">税金には、みんながより公平だと思える仕組みが必要！</p>
-    <img src="image53.png" alt="博士犬" class="lead-image">
-  </div>
-
-  <div class="card">
-    <div class="card-title">応能負担</div>
-    <div class="card-text">各自の能力に応じて負担すること</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">応益負担</div>
-    <div class="card-text">自分が受けた利益に応じたものを負担すること</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">水平的公平</div>
-    <div class="card-text">「負担能力が同じ人には、同じ負担を求めるのが公平」という考え方</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">垂直的公平</div>
-    <div class="card-text">「負担能力が高い人には、より大きな負担を求めるのが公平」という考え方</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">世代間の公平</div>
-    <div class="card-text">「現役世代と将来世代の受益と負担のバランスを保つ」という考え方</div>
-  </div>
-
+    <!-- HOMEボタン -->
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
 </body>
 </html>

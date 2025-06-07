@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生活と税金の関わりについて考えてみよう</title>
+    <title>消費税のおさめ方を見てみよう</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,27 +17,19 @@
             background-color: #fffae6;
             text-align: center;
         }
-
         h1 {
             margin-bottom: 20px;
-            font-size: 2.5em;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
         }
-
         img {
             max-width: 90vw;
             max-height: 80vh;
             object-fit: contain;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
         }
 
         /* HOMEボタンのスタイル */
         .home-button {
             position: fixed;
-            top: 20px;
+            Top: 20px;
             right: 20px;
             padding: 12px 24px;
             background-color: red;
@@ -52,34 +44,39 @@
         .home-button:hover {
             background-color: #cc0000;
         }
-
-        /* アニメーション定義 */
+    
+        /* アニメーション */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-    </style>
+
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .fadeInUp {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+</style>
 </head>
 <body>
-    <h1>消費税の納め方</h1>
-    <img src="page4image.png" alt="生活に関わる税スライド画像">
+    <h1 class="fadeIn">消費税のおさめ方を見てみよう</h1>
+    <img class="fadeInUp-delayed" src="page4_image.png" alt="消費税のスライド画像">
 
     <!-- HOMEボタン -->
     <button class="home-button" onclick="location.href='../main.html'">HOME</button>

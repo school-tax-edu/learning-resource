@@ -3,40 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>インタラクティブ租税教育教材 - 5ページ目</title>
+    <title>税金はどんなところに使われているだろう？</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            overflow: hidden;
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            background-color: #fffae6; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px;
+        }
+        .content-box { 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center;
+            max-width: 100%;
+            width: 90%;
+        }
+        .intro-text {
+            font-size: 1.5em;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+            margin: 30px auto 0 auto;
+            max-width: 800px;
+            line-height: 2;
+            text-align: left;
+        }
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .link-button {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+        }
+        .link-button:hover {
+            background-color: #0056b3;
+        }
+        .image-container {
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #fffae6;
+            gap: 20px;
         }
-
-        h3 {
-            margin-bottom: 20px;
-            font-size: 28px;
-            opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
+        .image-container img {
+            max-width: 70%;
+            border-radius: 8px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
-
-        img {
-            max-width: 90vw;
-            max-height: 80vh;
-            object-fit: contain;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
+        h1 {
+            font-size: 2.4em;
+            word-break: keep-all;
         }
 
         /* HOMEボタンのスタイル */
         .home-button {
             position: fixed;
-            top: 20px;
+            Top: 20px;
             right: 20px;
             padding: 12px 24px;
             background-color: red;
@@ -48,38 +86,54 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             transition: background-color 0.3s;
         }
-
         .home-button:hover {
             background-color: #cc0000;
         }
-
+    
         /* アニメーション */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-    </style>
+
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .fadeInUp {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+</style>
 </head>
 <body>
-    <h3>税金の流れと納め方</h3>
-    <img src="page5_image.png" alt="5ページ目のスライド">
+    <div class="content-box">
+        <h1 class="fadeIn">税金はどんなところに使われているだろう？</h1>
+        <div class="button-container fadeInUp">
+            <a class="link-button" href="townmap/index.html">町のどんなところで税金が使われているか見てみよう！</a>
+            <a class="link-button" href="fukui/index.html">みんなの県で税金が使われているところを探そう！</a>
+        </div>
+        <div class="intro-text fadeInUp-delayed">
+            わたしたちの身の回りには、国や地方公共団体による<br>
+            「公共サービス」や「公共施設」があります。
+        </div>
+    </div>
+    <div class="image-container">
+        <img src="image2.png" class="fadeInUp-delayed" alt="各県マップ">
+    </div>
 
     <!-- HOMEボタン -->
     <button class="home-button" onclick="location.href='../main.html'">HOME</button>

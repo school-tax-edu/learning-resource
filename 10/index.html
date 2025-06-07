@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>壊れた橋を直そう！</title>
   <style>
-    /* アニメーション定義 */
+    /* アニメーション */
     @keyframes fadeSlideDown {
       0% {
         opacity: 0;
@@ -33,7 +33,6 @@
       to { opacity: 1; }
     }
 
-    /* ベーススタイル */
     body {
       font-family: Arial, sans-serif;
       background-color: #fffae6;
@@ -47,13 +46,13 @@
     h1 {
       color: #ff6600;
       font-size: 32px;
-      animation: fadeSlideDown 1s ease-out 0.3s forwards;
       opacity: 0;
+      animation: fadeSlideDown 1s ease-out 0.3s forwards;
     }
 
     img {
-      animation: zoomIn 1.2s ease-out 0.8s forwards;
       opacity: 0;
+      animation: zoomIn 1.2s ease-out 0.8s forwards;
     }
 
     h2, h3 { color: #2c3e50; }
@@ -159,7 +158,6 @@
       let taxType = document.getElementById("taxType").value;
       let aIncome = 700, bIncome = 250, cIncome = 50, totalTax = 300;
       let aTax, bTax, cTax;
-
       if (taxType === "fixed") {
         let perPerson = totalTax / 3;
         aTax = bTax = cTax = perPerson;
@@ -173,7 +171,6 @@
         bTax = Math.min(bIncome * 0.20, totalTax * 1.0);
         cTax = Math.min(cIncome * 0.10, totalTax * 1.0);
       }
-
       document.getElementById("aTax").value = Math.round(aTax);
       document.getElementById("bTax").value = Math.round(bTax);
       document.getElementById("cTax").value = Math.round(cTax);
@@ -215,12 +212,10 @@
 
 <body>
   <button class="home-button" onclick="location.href='../main.html'">HOME</button>
-  <h1>メタバタウンに橋をかけよう！</h1>
+  <h1>壊れた橋を直そう！</h1>
   <img src="bridge.png" alt="壊れた橋のイラスト" width="300">
-  <p>みなさんはメタバタウンの住民です。メタバタウンには3人の住民が住んでおり、町の真ん中を町が管理する川が流れています。</p>
-  <p>行き来には渡し船を使っていますが、雨で増水すると運航できず不便でした。</p>
-  <p>今回、 メタバタウンの全ての住民の希望 により橋を建設することになりました。橋の建設費用は300万円です。</p>
-  <p>それぞれの収入に応じて、橋の修理費用を分担する方法を考えてみましょう。</p>
+  <p>ある村に大切な橋がありました。でも、大雨で橋が壊れてしまいました！橋を直すには300万円かかります。</p>
+  <p>村には3人の村民がいます。それぞれの収入に応じて、橋の修理費用を分担する方法を考えてみましょう。</p>
 
   <h2>税のルールを選ぼう！</h2>
   <label for="taxType">👉</label>
@@ -231,10 +226,10 @@
     <option value="progressive">収入の多い人に多めに負担してもらう</option>
   </select>
 
-  <h2>市民の収入と負担額</h2>
+  <h2>村民の収入と負担額</h2>
   <table>
     <tr>
-      <th>住民</th><th>収入（万円）</th><th>負担額（万円）</th><th>残りのお金（万円）</th>
+      <th>村民</th><th>収入（万円）</th><th>負担額（万円）</th><th>残りのお金（万円）</th>
     </tr>
     <tr>
       <td>Aさん（お金持ち）</td><td>700</td>
@@ -263,7 +258,7 @@
   </p>
 
   <div class="feedback">
-    <h3>あなたが住民だったら、どの方法がよいと思いますか？<br>Aさん、Bさん、Cさん、みんなが納得する方法はある？<br>意見を入力して共有しよう！</h3>
+    <h3>あなたが村長だったら、どの方法がよいと思いますか？<br>Aさん、Bさん、Cさん、みんなが納得する方法はある？<br>意見を入力して共有しよう！</h3>
     <div class="input-group">
       <div id="feedbackInput" contenteditable="true"></div>
       <button onclick="saveFeedbackAsImage()">画像を保存</button>
