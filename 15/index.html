@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>国の財政と歳入歳出</title>
+  <title>国税庁HPの紹介</title>
   <style>
     body {
       background-color: #fffae6;
@@ -38,8 +38,6 @@
       line-height: 1.6;
       max-width: 600px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-
-      /* アニメーション */
       opacity: 0;
       transform: translateY(30px);
       animation: fadeInUp 0.6s ease forwards;
@@ -55,19 +53,22 @@
       animation-delay: 0.2s;
     }
 
-    .card {
-      width: 90%;
+    .image-container {
+      width: 100%;
       max-width: 850px;
-      background: white;
-      border-left: 10px solid #005bac;
-      border-radius: 12px;
-      padding: 20px 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
+    .image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       opacity: 0;
       transform: translateY(30px);
       animation: fadeInUp 0.6s ease forwards;
+      animation-delay: 0.3s;
     }
 
     @keyframes fadeInUp {
@@ -75,22 +76,6 @@
         opacity: 1;
         transform: translateY(0);
       }
-    }
-
-    .card:nth-of-type(1) { animation-delay: 0.3s; }
-    .card:nth-of-type(2) { animation-delay: 0.5s; }
-    .card:nth-of-type(3) { animation-delay: 0.7s; }
-
-    .card-title {
-      font-size: 1.6em;
-      font-weight: bold;
-      color: #005bac;
-      margin-bottom: 10px;
-    }
-
-    .card-text {
-      font-size: 1.3em;
-      line-height: 1.6;
     }
 
     .home-button {
@@ -116,40 +101,18 @@
 </head>
 <body>
 
-  <h1>国の財政を見てみよう</h1>
+  <h1>国税庁ホームページの紹介</h1>
 
   <div class="lead-section">
     <div class="lead">
-      1年間に得た国の収入を「歳入」、支出を「歳出」といい、<br>
-      国や地方公共団体が行う経済活動を「財政」といいます。
+      税金について、もっと詳しく知りたい人は、<br>国税庁ホームページの「税の学習コーナー」へ
     </div>
     <img src="image53.png" alt="先生犬のキャラクター" class="lead-image">
   </div>
 
-  <div class="card">
-    <div class="card-title">2025年度（令和7年度）予算の国の一般会計歳出</div>
-    <div class="card-text">
-      115.2兆円は、主に<br>
-      ①社会保障、②国債費、③地方交付税交付金等に使われており、<br>
-      これらで約3/4を占めています。
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">2025年度（令和7年度）予算の国の一般会計歳入</div>
-    <div class="card-text">
-      115.2兆円は、<span style="color:#005bac; font-weight:bold;">税収等と公債金（借金）</span>で構成されています。
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">現在の財政状況</div>
-    <div class="card-text">
-      税収等では歳出全体の約2/3しか賄えておらず、<br>
-      残りの約1/3は<span style="color:#005bac; font-weight:bold;">公債金（借金）</span>に依存しています。<br><br>
-      この借金の返済には将来世代の税収等が充てられることになるため、<br>
-      将来世代へ負担を先送りしていることになります。
-    </div>
+  <!-- カードの代わりに画像表示 -->
+  <div class="image-container">
+    <img src="HP.png" alt="税の学習コーナーの紹介画像">
   </div>
 
   <button class="home-button" onclick="location.href='../main.html'">HOME</button>
