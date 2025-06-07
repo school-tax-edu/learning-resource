@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>納税の義務と公平な税金</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Arial", sans-serif;
+      background-color: #fffae6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #0044cc;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .lead-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .lead {
+      font-size: 1.6em;
+      font-weight: bold;
+      text-align: center;
+      margin: 0;
+    }
+
+    .lead-image {
+      width: 100px;
+      height: auto;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 800px;
+      background: white;
+      border-left: 10px solid #005bac;
+      border-radius: 12px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:nth-of-type(1) { animation-delay: 0.2s; }
+    .card:nth-of-type(2) { animation-delay: 0.4s; }
+    .card:nth-of-type(3) { animation-delay: 0.6s; }
+    .card:nth-of-type(4) { animation-delay: 0.8s; }
+    .card:nth-of-type(5) { animation-delay: 1s; }
+
+    .card-title {
+      font-size: 1.4em;
+      color: #005bac;
+      margin-bottom: 5px;
+    }
+
+    .card-text {
+      font-size: 1.2em;
+      line-height: 1.4;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 999;
+      transition: background-color 0.3s;
+    }
+
+    .home-button:hover {
+      background-color: #cc0000;
+    }
+
+    @media (max-width: 600px) {
+      .lead-image {
+        width: 70px;
+      }
+      .card-title {
+        font-size: 1.2em;
+      }
+      .card-text {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+
+  <h1>税の公平性</h1>
+
+  <div class="lead-container">
+    <p class="lead">税金には、みんながより公平だと思える仕組みが必要！</p>
+    <img src="image53.png" alt="博士犬" class="lead-image">
+  </div>
+
+  <div class="card">
+    <div class="card-title">応能負担</div>
+    <div class="card-text">各自の能力に応じて負担すること</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">応益負担</div>
+    <div class="card-text">自分が受けた利益に応じたものを負担すること</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">水平的公平</div>
+    <div class="card-text">「負担能力が同じ人には、同じ負担を求めるのが公平」という考え方</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">垂直的公平</div>
+    <div class="card-text">「負担能力が高い人には、より大きな負担を求めるのが公平」という考え方</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">世代間の公平</div>
+    <div class="card-text">「現役世代と将来世代の受益と負担のバランスを保つ」という考え方</div>
+  </div>
+
+</body>
+</html>

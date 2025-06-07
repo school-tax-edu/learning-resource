@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>1990年と2024年の比較</title>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #ffffff;
+      animation: fadeIn 1s ease-in;
+    }
+
+    img {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      animation: fadeIn 1.4s ease-in;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 18px 36px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background-color 0.3s, transform 0.3s;
+      z-index: 1000;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .home-button:hover {
+      background-color: #cc0000;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <button class="home-button" onclick="location.href='../../main.html'">HOME</button>
+  <img src="image17.png" alt="1990年と2024年の歳入歳出比較">
+</body>
+</html>

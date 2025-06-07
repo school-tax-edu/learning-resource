@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プライマリーバランスとは何か</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #fffae6;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      color: #333;
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 864px;
+      margin: 0 auto 40px;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #ffffff, #f0f0f5);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      font-size: 1.2em;
+      line-height: 1.8;
+      color: #333;
+      text-align: left;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out forwards;
+    }
+
+    .card:nth-of-type(1) { animation-delay: 0.5s; }
+    .card:nth-of-type(2) { animation-delay: 1s; }
+    .card:nth-of-type(3) { animation-delay: 1.5s; }
+
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
+
+    img {
+      max-width: 70%;
+      height: auto;
+      margin: 0 auto 40px;
+      display: block;
+      opacity: 0;
+      animation: fadeInUp 1s ease-out forwards;
+      animation-delay: 2s;
+    }
+
+    .source {
+      font-size: 0.9em;
+      color: #999;
+      margin-bottom: 20px;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .home-button:hover {
+      background-color: #cc0000;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>プライマリーバランスとは何か</h1>
+
+  <div class="card-container">
+    <div class="card">
+      プライマリーバランス（PB）とは、社会保障や公共事業をはじめ様々な行政サービスを提供するための経費（政策的経費）を、税収等で賄えているかどうかを示す指標です。
+    </div>
+    <div class="card">
+      現在、日本のPBは赤字であり、政策的経費を借金で賄っている状況です。<br>
+      （2025年度の一般会計予算ではPBは <span class="highlight">4.5兆円の赤字</span> です）
+    </div>
+    <div class="card">
+      「政策的経費+利払費」が「税収等」を上回ることを「財政収支が赤字」といい、<br>
+      現在の日本は財政収支の赤字が続いた結果、令和6年度末の <span class="highlight">公債金残高は約1,129兆円</span> に達する見込みです。
+    </div>
+  </div>
+
+  <img src="balance.png" alt="プライマリーバランスの状態図">
+
+  <div class="source">出所：財務省「これからの日本のために財政を考える」</div>
+
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+</body>
+</html>

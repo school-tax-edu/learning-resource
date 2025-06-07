@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>日本の将来と税金を考える</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #fffae6;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.4em;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-align: center;
+      animation: popIn 0.6s ease-out;
+    }
+
+    .main-layout {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .bubble-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 600px;
+      flex: 1;
+    }
+
+    .bubble {
+      border-radius: 30px;
+      padding: 16px 24px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #333;
+      line-height: 1.5;
+      width: 260px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .b1 { background-color: #cfe2ff; animation-delay: 0.1s; }
+    .b2 { background-color: #e0d4ff; animation-delay: 0.2s; }
+    .b3 { background-color: #d4f4d2; animation-delay: 0.3s; }
+    .b4 { background-color: #fef3b5; animation-delay: 0.4s; }
+    .b5 { background-color: #f9cdd9; animation-delay: 0.5s; }
+    .b6 { background-color: #ffe3c3; animation-delay: 0.6s; }
+
+    .character-group {
+      flex: 1;
+      min-width: 280px;
+      max-width: 480px;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .character-group img {
+      width: 100%;
+    }
+
+    .summary {
+      margin-top: 40px;
+      background-color: #dff0ff;
+      border-left: 8px solid #3498db;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 900px;
+      font-size: 1.2em;
+      line-height: 1.8;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      animation: slideUp 0.8s ease-out;
+    }
+
+    /* HOMEボタン（右下固定） */
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: background-color 0.3s ease;
+    }
+    .home-button:hover {
+      background-color: #cc0000;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .main-layout {
+        flex-direction: column;
+        align-items: center;
+      }
+      .bubble-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+      .bubble {
+        width: 90%;
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>日本の将来と税金を考える</h1>
+
+  <div class="main-layout">
+    <div class="bubble-grid">
+      <div class="bubble b1">経済成長の停滞<br><span style="font-weight: normal;">（デフレ・不況）</span></div>
+      <div class="bubble b2">経済のグローバル化</div>
+      <div class="bubble b3">財政赤字<br><span style="font-weight: normal;">（財政健全化・歳出の見直し）</span></div>
+      <div class="bubble b4">公債の債務残高</div>
+      <div class="bubble b5">少子高齢化<br><span style="font-weight: normal;">（社会保障費の増加、働き手の減少）</span></div>
+      <div class="bubble b6">雇用環境の変化<br><span style="font-weight: normal;">（非正規労働者の増加、外国人労働者の受け入れ）</span></div>
+    </div>
+
+    <div class="character-group">
+      <img src="character_group.png" alt="家族と日本地図のイラスト">
+    </div>
+  </div>
+
+  <div class="summary">
+    税金を考えることは、日本の将来の姿を考えることにも通じます。<br>
+    様々な課題がある中、税金のあり方や国民の負担と受益（福祉・公共サービス）がどうあるべきか、<br>
+    私たち一人ひとりが考えることが大切です。
+  </div>
+
+  <!-- HOMEボタン -->
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+
+</body>
+</html>

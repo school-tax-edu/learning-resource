@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>国の財政と歳入歳出</title>
+  <style>
+    body {
+      background-color: #fffae6;
+      font-family: "Arial", sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      color: #0044cc;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .lead-section {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .lead {
+      background-color: #d6ecfa;
+      padding: 15px 20px;
+      font-size: 1.4em;
+      border-radius: 10px;
+      line-height: 1.6;
+      max-width: 600px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+      /* アニメーション */
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+      animation-delay: 0.1s;
+    }
+
+    .lead-image {
+      width: 120px;
+      height: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+      animation-delay: 0.2s;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 850px;
+      background: white;
+      border-left: 10px solid #005bac;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:nth-of-type(1) { animation-delay: 0.3s; }
+    .card:nth-of-type(2) { animation-delay: 0.5s; }
+    .card:nth-of-type(3) { animation-delay: 0.7s; }
+
+    .card-title {
+      font-size: 1.6em;
+      font-weight: bold;
+      color: #005bac;
+      margin-bottom: 10px;
+    }
+
+    .card-text {
+      font-size: 1.3em;
+      line-height: 1.6;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+      z-index: 999;
+    }
+
+    .home-button:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>財政の悪化</h1>
+
+  <div class="lead-section">
+    <div class="lead">
+      歳出を税収等で賄えない状況は「財政の悪化」といえます。では、なぜ財政は悪化したのでしょうか。財政構造がどのように変化したのか見てみましょう。
+    </div>
+    <img src="image53.png" alt="先生犬のキャラクター" class="lead-image">
+  </div>
+
+  <div class="card">
+    <div class="card-title">社会保障費の増加</div>
+    <div class="card-text">
+      1990年度（平成２年度）と現在の歳出を比較すると、<br>
+社会保障関係費や国債費が大きく伸びています。<br>
+特に社会保障は、年金、医療、介護、こども・子育てなどの分野に分けられ、<br>
+国の一般会計歳出の約1/3を占める最大の支出項目となっています。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">歳入の不足</div>
+    <div class="card-text">
+      歳出の増加に対し歳入は、経済成長の停滞などが影響して<br>税収の伸びが見合っておらず、不足分を借金に頼っているため、<br>公債金は約6倍と大幅に増加しています。
+    </div>
+  </div>
+
+  <button style="
+  padding: 14px 28px;
+  background-color: #007bff;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  animation-delay: 0.9s;
+" onclick="location.href='graph/index.html'">
+  1990年の歳入・歳出を見てみよう
+</button>
+
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+
+</body>
+</html>

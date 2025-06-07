@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>累進課税とは</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #fffae6;
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .info-card, .card {
+      max-width: 900px;
+      margin: 0 auto 30px;
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: left;
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    .image-wrapper {
+      animation: fadeInUp 1.4s ease-out;
+      margin-bottom: 30px;
+    }
+
+    .image-wrapper img {
+      width: 70%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .entry {
+      margin-bottom: 20px;
+    }
+
+    .entry label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      font-size: 1em;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      resize: vertical;
+      background-color: #ffffff;
+      color: #000;
+    }
+
+    .buttons {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #007c91;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background: #005f6b;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    /* アニメーション */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      h1 {
+        font-size: 1.6em;
+      }
+      .info-card, .card {
+        padding: 16px;
+      }
+      textarea {
+        font-size: 0.95em;
+      }
+      .home-button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+      .image-wrapper img {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+
+  <h1 class="fade-in-up">累進課税とは</h1>
+
+  <div class="info-card fade-in-up">
+    日本では、所得税・相続税・贈与税については、累進課税制度が採用されています。累進課税とは、所得等が大きくなるほど適用される税率が高くなるというものです。ここでは、所得税における累進課税の計算方法を考えてみましょう。
+  </div>
+
+  <div class="image-wrapper fade-in-up">
+    <img src="ruisin.png" alt="ワーク4 累進課税制度について">
+  </div>
+
+  <div class="card fade-in-up" id="opinionCard">
+    <div class="entry">
+      <label for="q1">① 所得が1,000万円の人の税額は？</label>
+      <textarea id="q1" placeholder="例：おおよそ○○万円くらい"></textarea>
+    </div>
+
+    <div class="entry">
+      <label for="q2">② 500万円の人と比べてどうか？</label>
+      <textarea id="q2" placeholder="例：負担率が上がっている、税額の差が大きい"></textarea>
+    </div>
+
+    <div class="entry">
+      <label for="q3">③ なぜ累進課税制度があるのか？</label>
+      <textarea id="q3" placeholder="例：公平な税負担のため、所得格差の是正など"></textarea>
+    </div>
+
+    <div class="entry">
+      <label for="q4">④ なぜ多くの種類の税があるのか？</label>
+      <textarea id="q4" placeholder="例：さまざまな立場や場面に応じた公平な負担のため"></textarea>
+    </div>
+
+    <div class="buttons">
+      <button onclick="saveAsImage()">意見を画像として保存</button>
+    </div>
+  </div>
+
+  <script>
+    function saveAsImage() {
+      const target = document.getElementById("opinionCard");
+      html2canvas(target, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "work4_opinion.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>

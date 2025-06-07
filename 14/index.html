@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>税金の使いみちはどうやって決めるの？</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fffae6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            margin-top: 40px;
+            font-size: 28px;
+            text-align: center;
+        }
+        img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            margin-top: 20px;
+        }
+
+        /* HOMEボタンのスタイル */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #cc0000;
+        }
+    
+        /* アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+</style>
+</head>
+<body>
+    <h1 class="fadeIn">税金の使いみちはどうやって決めるの？</h1>
+    <img class="fadeInUp-delayed" src="page10_image.png" alt="税金の使いみちスライド">
+
+    <!-- HOMEボタン -->
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>なぜ社会保障関係費は増えるのか</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fffae6;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #333;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .info-card {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 1.2em;
+            line-height: 1.8em;
+            text-align: left;
+            color: #555;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .image-wrapper {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .home-button:hover {
+            background-color: #cc0000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>なぜ社会保障費は増え続けるのか</h1>
+
+    <div class="info-card">
+        日本は、他国に類を見ない速度で高齢化が進んでいます。<br>
+        高齢化に伴い社会保障の費用は増え続け、税金や借金に頼る分も増えています。
+    </div>
+
+    <div class="image-wrapper">
+        <img src="koureika.png" alt="高齢化率と出生数の推移">
+        <img src="kyuufu.png" alt="社会保障給付の財源推移">
+    </div>
+
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+</body>
+</html>

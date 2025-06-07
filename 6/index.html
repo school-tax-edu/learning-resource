@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブ租税教育教材 - 5ページ目</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fffae6;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        img {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* HOMEボタンのスタイル */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+
+        .home-button:hover {
+            background-color: #cc0000;
+        }
+
+        /* アニメーション */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h3>税金の流れと納め方</h3>
+    <img src="page5_image.png" alt="5ページ目のスライド">
+
+    <!-- HOMEボタン -->
+    <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+</body>
+</html>

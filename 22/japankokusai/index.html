@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>日本の普通国債残高の推移</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      font-family: sans-serif;
+      background: #fefefe;
+      margin: 2rem;
+      animation: fadeIn 1s ease-in;
+      transition: background-color 1s ease;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      animation: fadeIn 1.3s ease-in;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: 400px;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 1rem;
+      align-items: start;
+      animation: fadeIn 1.8s ease-in;
+    }
+
+    .graph-area {
+      grid-column: 1 / 2;
+    }
+
+    .controls {
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .info-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .info-box {
+      background: #eef;
+      border-radius: 8px;
+      padding: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .info-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 14px 28px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.3s, transform 0.3s;
+      z-index: 999;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .back-button:hover {
+      background-color: #cc0000;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>日本の普通国債残高の推移（兆円）</h2>
+<p style="font-size: 0.9em; color: gray;">
+  ※データ出所：財務省HP「国債等関係諸資料」を基に作成
+</p>
+
+  <div class="main-grid">
+    <div class="graph-area">
+      <canvas id="debtChart"></canvas>
+      <div class="controls">
+        <label for="yearSlider"><strong>年を選ぼう：</strong></label>
+        <input type="range" id="yearSlider" min="1965" max="2024" step="1" value="2024">
+        <span id="selectedYear">2024</span>年
+      </div>
+    </div>
+    <div class="info-column">
+      <div class="info-box" id="valueBox"></div>
+      <div class="info-box" id="noteBox"></div>
+    </div>
+  </div>
+
+  <script>
+    const years = Array.from({ length: 2024 - 1965 + 1 }, (_, i) => 1965 + i);
+    const values = [
+      1, 1, 2, 2, 2, 3, 4, 6, 8, 10,
+      15, 22, 32, 43, 56, 71, 82, 96, 110, 122,
+      134, 145, 152, 157, 161, 166, 172, 178, 193, 207,
+      225, 245, 258, 295, 332, 368, 392, 421, 457, 499,
+      527, 532, 541, 546, 594, 636, 670, 705, 744, 774,
+      805, 831, 853, 874, 887, 947, 991, 1027, 1054, 1105
+    ];
+
+    // グラデーション関数（残高に応じた色）
+    function getGradientColor(value) {
+      if (value < 300) return 'rgba(100, 200, 100, 0.6)';
+      if (value < 600) return 'rgba(255, 206, 86, 0.7)';
+      if (value < 900) return 'rgba(255, 159, 64, 0.7)';
+      return 'rgba(255, 99, 132, 0.8)';
+    }
+
+    const ctx = document.getElementById('debtChart').getContext('2d');
+    let currentYearIndex = years.indexOf(2024);
+
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: years,
+        datasets: [{
+          label: '国債残高（兆円）',
+          data: values,
+          backgroundColor: values.map((v, i) =>
+            i === currentYearIndex ? 'rgba(200, 0, 0, 0.9)' : getGradientColor(v)
+          ),
+          borderColor: values.map((v, i) =>
+            i === currentYearIndex ? 'rgba(120, 0, 0, 1)' : 'rgba(100, 100, 100, 0.5)'
+          ),
+          borderWidth: values.map((_, i) =>
+            i === currentYearIndex ? 3 : 1
+          )
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 1200,
+            title: {
+              display: true,
+              text: '兆円'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: '年'
+            },
+            ticks: {
+              maxTicksLimit: 15
+            }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => `${ctx.parsed.y} 兆円`
+            }
+          }
+        }
+      }
+    });
+
+    function updateInfo(year) {
+      const index = years.indexOf(year);
+      document.getElementById('selectedYear').textContent = year;
+
+      const bgColor = chart.data.datasets[0].backgroundColor;
+      const borderColor = chart.data.datasets[0].borderColor;
+      const borderWidth = chart.data.datasets[0].borderWidth;
+
+      years.forEach((_, i) => {
+        bgColor[i] = i === index ? 'rgba(200, 0, 0, 0.9)' : getGradientColor(values[i]);
+        borderColor[i] = i === index ? 'rgba(120, 0, 0, 1)' : 'rgba(100, 100, 100, 0.5)';
+        borderWidth[i] = i === index ? 3 : 1;
+      });
+
+      chart.update();
+
+      const valueBox = document.getElementById('valueBox');
+      const noteBox = document.getElementById('noteBox');
+
+      valueBox.innerHTML = `<h4>${year}年の国債残高</h4><p><strong>${values[index]}兆円</strong></p>`;
+
+      let note = '';
+      if (year <= 1980) {
+        note = 'このころはまだ借金は少なく、国の予算もコンパクトだったよ。';
+      } else if (year <= 2000) {
+        note = 'バブル崩壊や景気対策で、国債が増えてきた時代だよ。';
+      } else if (year <= 2020) {
+        note = '高齢化や不況対策、社会保障で国の借金がさらに増えてきたよ。';
+      } else {
+        note = '最近ではコロナ対策などもあり、国債残高は過去最大になっているんだ。';
+      }
+      noteBox.innerHTML = `<h4>注釈</h4><p>${note}</p>`;
+
+      valueBox.classList.remove("visible");
+      noteBox.classList.remove("visible");
+      void valueBox.offsetWidth;
+      void noteBox.offsetWidth;
+      valueBox.classList.add("visible");
+      noteBox.classList.add("visible");
+
+      // 🎨 年代ごとの背景色変化
+      let bodyColor = '#ffffff';
+      if (year <= 1980) {
+        bodyColor = '#e0f7fa'; // 若い時代：青
+      } else if (year <= 2000) {
+        bodyColor = '#fff3e0'; // 過渡期：オレンジ
+      } else {
+        bodyColor = '#f3e5f5'; // 現代・未来：紫
+      }
+      document.body.style.backgroundColor = bodyColor;
+    }
+
+    document.getElementById('yearSlider').addEventListener('input', (e) => {
+      const year = parseInt(e.target.value);
+      updateInfo(year);
+    });
+
+    updateInfo(2024);
+  </script>
+
+  <button class="back-button" onclick="history.back()">BACK</button>
+</body>
+</html>

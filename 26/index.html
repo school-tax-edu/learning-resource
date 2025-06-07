@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>税を通して選挙を考えよう</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #fffae6;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.4em;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    .image-wrapper {
+      max-width: 900px;
+      margin: 0 auto 30px;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-section {
+      background-color: #fff;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .form-section h3 {
+      font-size: 1.3em;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      color: #007c91;
+    }
+
+    .form-section p.explanation {
+      margin-bottom: 15px;
+      font-size: 1em;
+      color: #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    table th, table td {
+      padding: 6px;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+
+    table th {
+      background-color: #e0f7fa;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 60px;
+      font-size: 1em;
+      padding: 6px;
+      border: 1px solid #999;
+      border-radius: 4px;
+      resize: vertical;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .buttons {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background: #007c91;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background: #005f6b;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 24px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    @media screen and (max-width: 1024px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      .description {
+        font-size: 1em;
+      }
+      .form-section {
+        padding: 16px;
+      }
+      textarea {
+        font-size: 0.95em;
+      }
+      .buttons {
+        text-align: center;
+      }
+    }
+
+    @media print {
+      .home-button,
+      .buttons {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="home-button" onclick="location.href='../main.html'">HOME</button>
+
+  <h1>税を通して選挙を考えよう</h1>
+
+  <p class="description">
+    来月、A市では市議会議員選挙が行われます。<br>
+    次の情報を参考にワークに取り組んでみましょう。
+  </p>
+
+  <div class="image-wrapper">
+    <img src="jyoukyou.png" alt="A市の状況">
+    <img src="kouho.png" alt="候補者の公約と財源確保の方法">
+  </div>
+
+  <div class="form-section" id="opinionArea">
+    <h3>１ 政策と財源確保案の評価</h3>
+    <p class="explanation">　各候補者の公約について、若者、成人男性、成人女性、高齢者のそれぞれの立場から、①「政策」及び②「不足財源確保の方法」の視点に基づき、評価して記入してみましょう。</p>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>X候補</th>
+          <th>Y候補</th>
+          <th>Z候補</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>長所①</td><td><textarea placeholder="例：住民の要望を反映している"></textarea></td><td><textarea placeholder="例：新しいインフラ整備を提案している"></textarea></td><td><textarea placeholder="例：若者支援が充実している"></textarea></td></tr>
+        <tr><td>長所②</td><td><textarea placeholder="例：環境にも配慮した案である"></textarea></td><td><textarea placeholder="例：高齢者支援がしっかりしている"></textarea></td><td><textarea placeholder="例：地域活性化につながる"></textarea></td></tr>
+        <tr><td>短所①</td><td><textarea placeholder="例：実現性が低いかもしれない"></textarea></td><td><textarea placeholder="例：予算の裏付けが弱い"></textarea></td><td><textarea placeholder="例：特定の世代に偏っている"></textarea></td></tr>
+        <tr><td>短所②</td><td><textarea placeholder="例：実行までに時間がかかる"></textarea></td><td><textarea placeholder="例：財源が不明確"></textarea></td><td><textarea placeholder="例：影響が一部地域にとどまる"></textarea></td></tr>
+      </tbody>
+    </table>
+
+    <h3>２ 各立場からの候補者評価</h3>
+    <p class="explanation">　各候補者の公約について、若者、成人男性、成人女性、高齢者のそれぞれの立場から、①「政策」及び②「不足財源確保の方法」の視点に基づき、評価して記入してみましょう。</p>
+    <table>
+      <thead>
+        <tr><th></th><th>X候補</th><th>Y候補</th><th>Z候補</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>若者①</td><td><textarea placeholder="例：学生の声を取り入れている"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>若者②</td><td><textarea placeholder="例：若者向けの雇用支援がある"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>成人男性①</td><td><textarea placeholder="例：産業支援策が具体的"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>成人男性②</td><td><textarea placeholder="例：財源のバランスが良い"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>成人女性①</td><td><textarea placeholder="例：子育て支援が整っている"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>成人女性②</td><td><textarea placeholder="例：医療政策が現実的"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>高齢者①</td><td><textarea placeholder="例：年金や福祉の強化を重視"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>高齢者②</td><td><textarea placeholder="例：高齢者の声を聞く姿勢がある"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        <tr><td>その他</td><td><textarea placeholder="例：多様性を尊重する政策がある"></textarea></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+      </tbody>
+    </table>
+
+    <h3>３ あなたの投票と意見</h3>
+    <p class="explanation">　あなたはX候補、Y候補、Z候補の誰に投票しますか。理由も含めて記入し、そのあとグループで意見交換をしてみましょう。</p>
+    <label>私は＿＿＿候補に投票します！理由：</label>
+    <textarea placeholder="例：教育支援の提案に共感したから"></textarea>
+    <label>みんなの意見：</label>
+    <textarea placeholder="例：X候補を推す声が多く、実現性があるという意見があった"></textarea>
+  </div>
+
+  <div class="buttons">
+    <button onclick="saveAsImage()">意見を画像として保存</button>
+  </div>
+
+  <script>
+    function saveAsImage() {
+  const target = document.getElementById("opinionArea");
+  const textareas = target.querySelectorAll("textarea");
+  const replacements = [];
+
+  textareas.forEach(textarea => {
+    const div = document.createElement("div");
+    div.textContent = textarea.value;
+    const style = getComputedStyle(textarea);
+
+    div.style.width = style.width;
+    div.style.height = style.height;
+    div.style.fontSize = style.fontSize;
+    div.style.padding = style.padding;
+    div.style.border = style.border;
+    div.style.borderRadius = style.borderRadius;
+    div.style.boxSizing = style.boxSizing;
+    div.style.background = style.backgroundColor;
+    div.style.whiteSpace = "pre-wrap";
+    div.style.wordWrap = "break-word";
+    div.style.lineHeight = style.lineHeight;
+
+    // 親要素に差し込み
+    textarea.style.display = "none";
+    textarea.parentNode.insertBefore(div, textarea);
+
+    replacements.push({ textarea, div });
+  });
+
+  html2canvas(target, {
+    backgroundColor: "#ffffff",
+    scale: 2,
+    useCORS: true
+  }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "選挙意見入力.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+    // 元に戻す
+    replacements.forEach(({ textarea, div }) => {
+      div.remove();
+      textarea.style.display = "";
+    });
+  });
+}
+  </script>
+
+</body>
+</html>
