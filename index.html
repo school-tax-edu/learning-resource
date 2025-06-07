@@ -1,153 +1,176 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>租税教育用電子副教材（プロトタイプ）のご紹介</title>
-  <style>
-    body {
-      font-family: "Helvetica", "Arial", sans-serif;
-      background: #fefcf8;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: linear-gradient(to right, #c2e9fb, #a1c4fd);
-      padding: 1em;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-      color: #222;
-    }
-    .section {
-      max-width: 1000px;
-      margin: 2em auto;
-      padding: 1em;
-      background: #fefcf8;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .section h2 {
-      font-size: 1.5em;
-      margin-bottom: 0.5em;
-      color: #444;
-    }
-    .content-block {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 2em;
-    }
-    .content-block img {
-      width: 300px;
-      height: auto;
-      border-radius: 10px;
-    }
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5em;
-    }
-    .buttons a {
-      display: inline-block;
-      padding: 0.6em 1.2em;
-      background: #2196f3;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background 0.3s;
-      white-space: nowrap;
-    }
-    .buttons a:hover {
-      background: #1976d2;
-    }
-    .download a {
-      background: #4caf50;
-    }
-    .download a:hover {
-      background: #388e3c;
-    }
-  
-    footer {
-      background: #e0f7fa;
-      padding: 1.5em;
-      text-align: center;
-      font-size: 0.95em;
-      color: #333;
-      margin-top: 2em;
-    }
-    .footer a {
-      color: #0077cc;
-      text-decoration: none;
-    }
-    .footer a:hover {
-      text-decoration: underline;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明るく豊かなくらしのために</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            background-color: #FFF7AC;
+            display: flex;
+            flex-direction: row;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 75vw;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .media-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        img, video {
+            max-width: 65vw;
+            max-height: 65vh;
+            object-fit: contain;
+            display: none;
+        }
+        .show {
+            display: block !important;
+        }
+        .index-title {
+            font-size: 45px;
+            margin: 15px 0 10px;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 30px;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .footer {
+            font-size: 30px;
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .nav-links {
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+            text-align: left; 
+            width: 25vw;
+            max-width: 300px;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-links ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li {
+            margin: 10px 0;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-size: 18px;
+            color: #007BFF;
+            display: block;
+            padding: 10px;
+            background: #e3e3e3;
+            border-radius: 5px;
+        }
+        .nav-links a:hover {
+            background: #d1d1d1;
+        }
+    
+        /* アニメーション定義 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .fadeInUp {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fadeInUp-delayed {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+</style>
 </head>
 <body>
-
-<header>
-  <h1>租税教育用電子副教材（プロトタイプ）のご紹介</h1>
-</header>
-
-<div class="section">
-  <h2>小学生向け</h2>
-  <div class="content-block">
-    <img src="elementary.png" alt="小学生用 共通">
-    <div class="buttons">
-      <a href="elementary/toyama/main.html">富山県の電子副教材はこちら</a>
-      <a href="elementary/ishikawa/main.html">石川県の電子副教材はこちら</a>
-      <a href="elementary/fukui/main.html">福井県の電子副教材はこちら</a>
-      <div class="download">
-        <a href="elementary/shidou_youryou.zip" download>先生・講師の方へ（指導要領のダウンロード）</a>
-      </div>
+    <div class="container">
+        <div class="index-title fadeIn">明るく豊かなくらしのために</div>
+        <div class="subtitle fadeInUp">小学校社会科資料</div>
+        <div class="media-container">
+            <img id="introImage" class="show fadeInUp" src="page1_image.png" alt="教材の表紙" class="show">
+            <video id="introVideo" controls muted playsinline>
+                <source src="opening.mp4" type="video/mp4">
+                お使いのブラウザは動画再生に対応していません。
+            </video>
+        </div>
+        <div class="footer fadeInUp-delayed">石川県租税教育推進協議会</div>
     </div>
-  </div>
-</div>
+    <nav class="nav-links fadeInUp-delayed">
+        <h2 class="index-title">INDEX</h2>
+        <ul>
+            <li><a href="1/index.html">1. 税金についてどう思う？</a></li>
+            <li><a href="2/index.html">2. 税金クイズ</a></li>
+            <li><a href="3/index.html">3. 消費税の流れ</a></li>
+            <li><a href="4/index.html">4. 税金の流れと納め方</a></li>
+            <li><a href="5/index.html">5. 税金の使われ方</a></li>
+            <li><a href="6/index.html">6. 一人当たりの教育費</a></li>
+            <li><a href="7/index.html">7. 税金の使いみちの決め方</a></li>
+            <li><a href="8/index.html">8. 予算を見てみよう！</a></li>
+            <li><a href="9/index.html">9. 日本村の予算を作ろう！</a></li>
+            <li><a href="10/index.html">10. 壊れた橋を直そう！</a></li>
+            <li><a href="11/index.html">11. 税金は大切なもの</a></li>
+            <li><a href="12/index.html">12. 税金のある町　税金のない町</a></li>
+            <li><a href="13/index.html">13. 税金は何のためにあるの？</a></li>
+            <li><a href="14/index.html">14. 税の歴史を学ぼう！</a></li>
+            <li><a href="15/index.html">15. 税の学習コーナー</a></li>
+        </ul>
+    </nav>
 
-<div class="section">
-  <h2>中学生向け</h2>
-  <div class="content-block">
-    <img src="junior.png" alt="中学生用 共通">
-    <div class="buttons">
-      <a href="junior/toyama/main.html">富山県の電子副教材はこちら</a>
-      <a href="junior/ishikawa/main.html">石川県の電子副教材はこちら</a>
-      <a href="junior/fukui/main.html">福井県の電子副教材はこちら</a>
-      <div class="download">
-        <a href="junior/shidou_youryou.zip" download>先生・講師の方へ（指導要領のダウンロード）</a>
-      </div>
-    </div>
-  </div>
-</div>
+    <script>
+        const image = document.getElementById('introImage');
+        const video = document.getElementById('introVideo');
 
-<div class="section">
-  <h2>高校生向け</h2>
-  <div class="content-block">
-    <img src="high.png" alt="高校生用 共通">
-    <div class="buttons">
-      <a href="high/toyama/main.html">富山県の電子副教材はこちら</a>
-      <a href="high/ishikawa/main.html">石川県の電子副教材はこちら</a>
-      <a href="high/fukui/main.html">福井県の電子副教材はこちら</a>
-      <div class="download">
-        <a href="high/shidou_youryou.zip" download>先生・講師の方へ（指導要領のダウンロード）</a>
-      </div>
-    </div>
-  </div>
-</div>
+        setTimeout(() => {
+            image.classList.remove('show');
+            video.classList.add('show');
+            video.play();
+        }, 2000);
 
-
-<footer>
-  <div class="footer">
-    <p>電子副教材についてのお問い合わせやご意見は、<br>
-    金沢国税局　国税広報広聴室　広報係　までお願いします。<br>
-    TEL: 076-231-2131　MAIL: <a href="mailto:kouhou@kaz.nta.go.jp">kouhou@kaz.nta.go.jp</a></p>
-  </div>
-</footer>
+        video.addEventListener('ended', () => {
+            video.classList.remove('show');
+            image.classList.add('show');
+        });
+    </script>
 </body>
-
 </html>
